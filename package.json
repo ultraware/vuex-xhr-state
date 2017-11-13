@@ -1,0 +1,28 @@
+{
+  "name": "vuex-xhr-state",
+  "version": "0.0.2",
+  "description": "Use Vuex to manage the state of you're ajax calls.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ultraware/vuex-xhr-state.git"
+  },
+  "keywords": [
+    "xhr",
+    "ajax",
+    "state",
+    "loading"
+  ],
+  "author": "Rick Aikema",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ultraware/vuex-xhr-state/issues"
+  },
+  "homepage": "https://github.com/ultraware/vuex-xhr-state#readme",
+  "dependencies": {
+    "js-md5": "^0.7.2"
+  }
+}
