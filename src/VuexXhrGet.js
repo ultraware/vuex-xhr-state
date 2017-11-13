@@ -16,7 +16,8 @@ export default class VuexXhrGet extends VuexXhr {
     this.mutations = mutations(this.cache)
     this.actions = actions(this.cache, options.method)
     this.getters = getters(this.cache)
-
-    this.mergeStore(options.store)
+    if (options.store) {
+      this.mergeStore(options.store)
+    }
   }
 }
