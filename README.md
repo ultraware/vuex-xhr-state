@@ -1,0 +1,1 @@
+vuex-xhr-state
