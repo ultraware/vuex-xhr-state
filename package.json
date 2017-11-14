@@ -1,9 +1,10 @@
 {
   "name": "vuex-xhr-state",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Use Vuex to manage the state of you're ajax calls.",
-  "main": "src/index.js",
+  "main": "dist/vuex-xhr-state.js",
   "scripts": {
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,6 +24,17 @@
   },
   "homepage": "https://github.com/ultraware/vuex-xhr-state#readme",
   "dependencies": {
-    "js-md5": "^0.7.2"
+    "js-md5": "^0.7.2",
+    "vue": "^2.5.3",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015": "^6.24.1",
+    "uglify-es": "^3.1.9",
+    "uglify-es-webpack-plugin": "^0.10.0",
+    "webpack": "^3.8.1"
   }
 }
