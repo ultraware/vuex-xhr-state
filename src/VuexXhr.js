@@ -1,17 +1,18 @@
-import { ACTION, GET } from './keys'
+import { ACTION, GET, STATE } from './keys'
+import { payloadToKey } from './helpers'
 
 const SEPARATOR = '/'
 
 export default class XhrState {
-  constructor () {
-    if (new.target === XhrState) {
-      throw new TypeError('Cannot construct XhrState instances directly')
-    }
-  }
+  // constructor () {
+  //   if (new.target === XhrState) {
+  //     throw new TypeError('Cannot construct XhrState instances directly')
+  //   }
+  // }
 
   mergeStore (store) {
     if (store.state) {
-      Object.assign(this.state, store.state)
+      this.state = Object.assign({}, this.state, store.state)
     }
     if (store.mutations) {
       Object.assign(this.mutations, store.mutations)
@@ -29,35 +30,35 @@ export default class XhrState {
   }
 
   mapPending (payload) {
-    return { key: this.namespace + SEPARATOR + GET.PENDING, payload }
+    return {key: this.namespace + SEPARATOR + GET.PENDING, payload}
   }
 
   mapHasError (payload) {
     if (!this.cache) {
       throw new Error('mapHasError is not available on this object')
     }
-    return { key: this.namespace + SEPARATOR + GET.HAS_ERROR, payload }
+    return {key: this.namespace + SEPARATOR + GET.HAS_ERROR, payload}
   }
 
   mapFetched (payload) {
     if (!this.cache) {
       throw new Error('mapFetched is not available on this object')
     }
-    return { key: this.namespace + SEPARATOR + GET.FETCHED, payload }
+    return {key: this.namespace + SEPARATOR + GET.FETCHED, payload}
   }
 
   mapData (payload) {
     if (!this.cache) {
       throw new Error('mapData is not available on this object')
     }
-    return { key: this.namespace + SEPARATOR + GET.DATA, payload }
+    return {key: this.namespace + SEPARATOR + GET.DATA, payload}
   }
 
   mapResponse (payload) {
     if (!this.cache) {
       throw new Error('mapResponse is not available on this object')
     }
-    return { key: this.namespace + SEPARATOR + GET.RESPONSE, payload }
+    return {key: this.namespace + SEPARATOR + GET.RESPONSE, payload}
   }
 
   pending (getters, payload) {
@@ -110,14 +111,34 @@ export default class XhrState {
 
   /** @private */
   findGetter (getters, index) {
-    if (typeof getters[ this.namespace + SEPARATOR + index ] !== 'undefined') {
-      return getters[ this.namespace + SEPARATOR + index ]
+    if (typeof getters[this.namespace + SEPARATOR + index] !== 'undefined') {
+      return getters[this.namespace + SEPARATOR + index]
     }
 
-    if (typeof getters[ index ] !== 'undefined') {
-      return getters[ index ]
+    if (typeof getters[index] !== 'undefined') {
+      return getters[index]
     }
 
     throw new Error('VuexXhr Error. Getter not found (' + index + ')' + this.namespace)
+  }
+
+  setState (payload, mockState) {
+    if (mockState === undefined) {
+      mockState = payload
+      payload = undefined
+    }
+    if (mockState.data && !mockState.response) {
+      mockState.response = {
+        data: mockState.data,
+      }
+    }
+    this.state[STATE.ERROR][payloadToKey(payload)] = mockState.error
+    this.state[STATE.FETCHED][payloadToKey(payload)] = (mockState.response)
+    this.state[STATE.PENDING][payloadToKey(payload)] = mockState.pending
+    this.state[STATE.RESPONSE][payloadToKey(payload)] = mockState.response
+  }
+
+  setMethod (stub) {
+    this.actions.method = stub
   }
 }
