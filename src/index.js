@@ -1,8 +1,9 @@
 import { GLOBAL_ACTIONS, GLOBAL_GETTERS, GLOBAL_NAMESPACE } from './globalXhrState'
 
 export * from './mappers'
-export { default as VuexXhrCreator } from './VuexXhrCreator'
-export { default as VuexXhrGet } from './VuexXhrGet'
+export * from './VuexXhrCreator'
+export * from './VuexXhrGet'
+export * from './VuexXhrPut'
 
 export default {
   install: function (Vue) {

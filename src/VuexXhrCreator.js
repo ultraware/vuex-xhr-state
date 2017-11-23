@@ -1,6 +1,6 @@
 import { GLOBAL_GETTERS, GLOBAL_NAMESPACE, globalState } from './globalXhrState'
 
-export default class VuexXhrCreator {
+export class VuexXhrCreator {
   constructor (namespace, xhrStores) {
     this.namespace = namespace
     // this.xhrStores = xhrStores

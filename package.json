@@ -2,9 +2,9 @@
   "name": "vuex-xhr-state",
   "version": "0.0.5",
   "description": "Use Vuex to manage the state of you're ajax calls.",
-  "main": "dist/vuex-xhr-state.js",
+  "main": "dist/",
   "scripts": {
-    "build": "webpack",
+    "build": "babel src --out-dir dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

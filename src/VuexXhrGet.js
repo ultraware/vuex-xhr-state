@@ -4,7 +4,7 @@ import mutations from './mutations'
 import actions from './actions'
 import VuexXhr from './VuexXhr'
 
-export default class VuexXhrGet extends VuexXhr {
+export class VuexXhrGet extends VuexXhr {
   // @todo implement cache
   // @todo getters state enz in this file?
   constructor (options) {
