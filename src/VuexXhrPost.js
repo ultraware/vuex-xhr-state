@@ -4,7 +4,7 @@ import mutations from './mutations'
 import actions from './actions'
 import VuexXhr from './VuexXhr'
 
-export class VuexXhrPut extends VuexXhr {
+export class VuexXhrPost extends VuexXhr {
   // @todo the pending prop uses the payload so for every put there is a pending in the state
   // @todo function fetch is not correct when we do put
   constructor (options) {

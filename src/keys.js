@@ -10,6 +10,8 @@ const DEFAULT = '_xhr_default'
 const REQUEST = '_xhr_request'
 const RECEIVED = '_xhr_received'
 const FAILED = '_xhr_failed'
+const RESET = '_xhr_reset'
+const INVALIDATE = '_xhr_invalidate'
 
 export const STATE = {
   PENDING: 'state_' + PENDING,
@@ -23,6 +25,8 @@ export const MUTATIONS = {
   REQUEST,
   RECEIVED,
   FAILED,
+  RESET,
+  INVALIDATE,
 }
 
 export const GET = {
@@ -35,4 +39,6 @@ export const GET = {
 export const ACTION = {
   FETCH,
   FORCE_FETCH,
+  RESET,
+  INVALIDATE,
 }

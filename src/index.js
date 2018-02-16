@@ -1,9 +1,10 @@
 import { GLOBAL_ACTIONS, GLOBAL_GETTERS, GLOBAL_NAMESPACE } from './globalXhrState'
 
-export * from './mappers'
-export * from './VuexXhrCreator'
-export * from './VuexXhrGet'
-export * from './VuexXhrPut'
+export { mapXhrGetters } from './mappers'
+export { VuexXhrCreator } from './VuexXhrCreator'
+export { VuexXhrGet } from './VuexXhrGet'
+export { VuexXhrPut } from './VuexXhrPut'
+export { VuexXhrPost } from './VuexXhrPost'
 
 export default {
   install: function (Vue) {
@@ -22,10 +23,3 @@ export default {
     }
   },
 }
-// export function mapXhrStateModules (xhrStates) {
-//   return xhrStates.reduce(function (result, xhrState) {
-//     return xhrState.storeModule(result)
-//   }, {})
-// }
-
-// @ todo make some tests

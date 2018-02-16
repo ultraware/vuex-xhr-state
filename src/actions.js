@@ -13,10 +13,17 @@ export default (cache, method) => {
       }
       return fetch(result.method, store, payload)
     },
+    [ACTION.RESET]: function (store) {
+      store.commit(MUTATIONS.RESET)
+    },
   }
   if (cache) {
     result[ACTION.FORCE_FETCH] = (store, payload) => {
       return fetch(result.method, store, payload)
+    }
+    result[ACTION.INVALIDATE] = (store, payload) => {
+      const key = payloadToKey(payload)
+      store.commit(MUTATIONS.INVALIDATE, {key})
     }
   }
   result.method = method
@@ -45,12 +52,3 @@ function getResolvingPromise (store, payload) {
   })
 }
 
-// export const mocActions = (cache) => {
-//   const result = {
-//     [ACTION.FETCH]: sinon.stub(),
-//   }
-//   if (cache) {
-//     result[ACTION.FORCE_FETCH] = sinon.stub()
-//   }
-//   return result
-// }

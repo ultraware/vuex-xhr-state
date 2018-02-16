@@ -8,17 +8,17 @@ export class VuexXhrGet extends VuexXhr {
   // @todo implement cache
   // @todo getters state enz in this file?
   constructor (options) {
-    options = options || {}
     super()
+    this.options = options || {}
     this.namespaced = true
-    this.cache = (options.cache === undefined ? true : options.cache)
+    this.options.cache = (typeof this.options.cache === 'undefined' ? true : this.options.cache)
 
-    this.state = state(this.cache, options.default)
-    this.mutations = mutations(this.cache)
-    this.actions = actions(this.cache, options.method)
-    this.getters = getters(this.cache)
-    if (options.store) {
-      this.mergeStore(options.store)
+    this.state = state(this.options)
+    this.mutations = mutations(this.options)
+    this.actions = actions(this.options.cache, this.options.method)
+    this.getters = getters(this.options.cache)
+    if (this.options.store) {
+      this.mergeStore(this.options.store)
     }
   }
 }

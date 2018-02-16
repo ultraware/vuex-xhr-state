@@ -11,9 +11,6 @@ export default class XhrState {
   // }
 
   mergeStore (store) {
-    if (store.state) {
-      this.state = Object.assign({}, this.state, store.state)
-    }
     if (store.mutations) {
       Object.assign(this.mutations, store.mutations)
     }
@@ -34,28 +31,28 @@ export default class XhrState {
   }
 
   mapHasError (payload) {
-    if (!this.cache) {
+    if (!this.options.cache) {
       throw new Error('mapHasError is not available on this object')
     }
     return {key: this.namespace + SEPARATOR + GET.HAS_ERROR, payload}
   }
 
   mapFetched (payload) {
-    if (!this.cache) {
+    if (!this.options.cache) {
       throw new Error('mapFetched is not available on this object')
     }
     return {key: this.namespace + SEPARATOR + GET.FETCHED, payload}
   }
 
   mapData (payload) {
-    if (!this.cache) {
+    if (!this.options.cache) {
       throw new Error('mapData is not available on this object')
     }
     return {key: this.namespace + SEPARATOR + GET.DATA, payload}
   }
 
   mapResponse (payload) {
-    if (!this.cache) {
+    if (!this.options.cache) {
       throw new Error('mapResponse is not available on this object')
     }
     return {key: this.namespace + SEPARATOR + GET.RESPONSE, payload}
@@ -67,7 +64,7 @@ export default class XhrState {
   }
 
   hasError (getters, payload) {
-    if (!this.cache) {
+    if (!this.options.cache) {
       throw new Error('hasError is not available on this object')
     }
     const getter = this.findGetter(getters, GET.HAS_ERROR)
@@ -75,7 +72,7 @@ export default class XhrState {
   }
 
   fetched (getters, payload) {
-    if (!this.cache) {
+    if (!this.options.cache) {
       throw new Error('fetched is not available on this object')
     }
     const getter = this.findGetter(getters, GET.FETCHED)
@@ -83,7 +80,7 @@ export default class XhrState {
   }
 
   data (getters, payload) {
-    if (!this.cache) {
+    if (!this.options.cache) {
       throw new Error('data is not available on this object')
     }
     const getter = this.findGetter(getters, GET.DATA)
@@ -91,7 +88,7 @@ export default class XhrState {
   }
 
   response (getters, payload) {
-    if (!this.cache) {
+    if (!this.options.cache) {
       throw new Error('response is not available on this object')
     }
     const getter = this.findGetter(getters, GET.RESPONSE)
@@ -103,10 +100,14 @@ export default class XhrState {
   }
 
   forceFetch () {
-    if (!this.cache) {
+    if (!this.options.cache) {
       throw new Error('forceFetch is not available on this object')
     }
     return this.namespace + SEPARATOR + ACTION.FORCE_FETCH
+  }
+
+  reset () {
+    return this.namespace + SEPARATOR + ACTION.RESET
   }
 
   /** @private */

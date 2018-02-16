@@ -3,7 +3,6 @@ import { GLOBAL_GETTERS, GLOBAL_NAMESPACE, globalState } from './globalXhrState'
 export class VuexXhrCreator {
   constructor (namespace, xhrStores) {
     this.namespace = namespace
-    // this.xhrStores = xhrStores
     this.modules = this.xhrStoresToModules(xhrStores)
     this.store = {}
   }
@@ -21,16 +20,12 @@ export class VuexXhrCreator {
     }
   }
 
-  // /** @private */
-  // emptyStore () {
-  //   return {
-  //     namespaced: true,
-  //     state: {},
-  //     mutations: {},
-  //     actions: {},
-  //     getters: {},
-  //   }
-  // }
+  reset ($store) {
+    for (const prop in this.modules) {
+      if (!this.modules.hasOwnProperty(prop)) continue
+      $store.dispatch(this.modules[prop].reset())
+    }
+  }
 
   xhrStoresToModules (xhrStores) {
     const modules = {}

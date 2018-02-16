@@ -18,7 +18,8 @@ npm install vuex-xhr-state
 yarn add  vuex-xhr-state
 ```
 
-# Example
+# Example 
+Could be outdated and incomplete feel free to ask questions on gitter (ricky-rick) or e-mail 
 ### Store module file logs/index.js
 ```js 
 export const xhrLogList = new VuexXhrGet({
@@ -35,11 +36,18 @@ export const logs = new VuexXhrCreator('logs', [ xhrLogList ])
 
 ### Store 
 ```js
+import VueXhrState from 'vuex-xhr-state'
 import { logs } from './logs/'
+
+Vue.use(VueXhrState)
+
+const xhrPlugins = [
+  logs,
+]
 
 export default new Vuex.Store({
   plugins: [
-    logs.plugin('logs'),
+    ...xhrPlugins.map((plugin) => plugin.plugin()),
   ],
 })
 ```
@@ -48,7 +56,7 @@ export default new Vuex.Store({
 ```js
     import { mapActions } from 'vuex'
     import { xhrLogList } from '@/store/logs'
-    import { mapXhrGetters } from '@/domains/vuex-xhr'
+    import { mapXhrGetters } from 'vuex-xhr-state'
     
     export default {
      computed: {
