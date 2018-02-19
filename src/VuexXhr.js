@@ -128,11 +128,23 @@ export default class XhrState {
       mockState = payload
       payload = undefined
     }
+
+    if (!mockState.data && !mockState.response) {
+      mockState = {
+        error: false,
+        pending: false,
+        response: {
+          data: mockState.data,
+        },
+      }
+    }
+
     if (mockState.data && !mockState.response) {
       mockState.response = {
         data: mockState.data,
       }
     }
+
     this.state[STATE.ERROR][payloadToKey(payload)] = mockState.error
     this.state[STATE.FETCHED][payloadToKey(payload)] = (mockState.response)
     this.state[STATE.PENDING][payloadToKey(payload)] = mockState.pending
@@ -141,5 +153,14 @@ export default class XhrState {
 
   setMethod (stub) {
     this.actions.method = stub
+  }
+
+  mockCall (payload, data) {
+    const promise = new Promise(function (resolve, reject) {
+      resolve({
+        data,
+      })
+    })
+    this.setMethod(() => promise)
   }
 }

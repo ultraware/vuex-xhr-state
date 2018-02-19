@@ -6,10 +6,10 @@ export default (cache, method) => {
   const result = {
     [ACTION.FETCH]: function (store, payload) {
       if (cache && store.getters[GET.PENDING](payload) && store.getters[GET.PENDING](payload)) {
-        return getResolvingPromise(store, payload)
+        return getResolvingPromiseFromGetter(store, payload)
       }
       if (cache && store.getters[GET.FETCHED](payload) && store.getters[GET.FETCHED](payload)) {
-        return getResolvingPromise(store, payload)
+        return getResolvingPromiseFromGetter(store, payload)
       }
       return fetch(result.method, store, payload)
     },
@@ -31,24 +31,47 @@ export default (cache, method) => {
 }
 
 function fetch (method, store, payload) {
-  const prom = method(payload)
+  let prom
+  const result = method(payload)
   const key = payloadToKey(payload)
   const uniqueId = Math.random()
-  prom.then(function (response) {
-    store.commit(MUTATIONS.RECEIVED, {key, response})
-    store.dispatch(`${GLOBAL_NAMESPACE}/${GLOBAL_ACTIONS.RECEIVED}`, uniqueId, {root: true})
-  }).catch((response) => {
-    store.commit(MUTATIONS.FAILED, {key, response})
-    store.dispatch(`${GLOBAL_NAMESPACE}/${GLOBAL_ACTIONS.FAILED}`, {key: uniqueId, response}, {root: true})
-  })
+  if (result.then) {
+    prom = result
+    prom.then(function (response) {
+      mutateReceived(store, key, uniqueId, response)
+    }).catch((response) => {
+      mutateFailed(store, key, uniqueId.response)
+    })
+  } else {
+    prom = getResolvingPromise({
+      data: result,
+    })
+    mutateReceived(store, key, uniqueId, result)
+  }
   store.commit(MUTATIONS.REQUEST, {key})
   store.dispatch(`${GLOBAL_NAMESPACE}/${GLOBAL_ACTIONS.REQUEST}`, uniqueId, {root: true})
   return prom
 }
 
-function getResolvingPromise (store, payload) {
+function mutateReceived (store, key, uniqueId, response) {
+  store.commit(MUTATIONS.RECEIVED, {key, response})
+  store.dispatch(`${GLOBAL_NAMESPACE}/${GLOBAL_ACTIONS.RECEIVED}`, uniqueId, {root: true})
+}
+
+function mutateFailed (store, key, uniqueId, response) {
+  store.commit(MUTATIONS.FAILED, {key, response})
+  store.dispatch(`${GLOBAL_NAMESPACE}/${GLOBAL_ACTIONS.FAILED}`, {key: uniqueId, response}, {root: true})
+}
+
+function getResolvingPromiseFromGetter (store, payload) {
+  return getResolvingPromise(store.getters[GET.RESPONSE](payload))
+}
+
+function getResolvingPromise (data) {
   return new Promise(function (resolve) {
-    resolve(store.getters[GET.RESPONSE](payload))
+    resolve(data)
   })
 }
+
+
 
