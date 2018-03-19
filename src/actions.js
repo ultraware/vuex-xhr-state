@@ -46,7 +46,9 @@ function fetch (method, store, payload) {
     prom = getResolvingPromise({
       data: result,
     })
-    mutateReceived(store, key, uniqueId, result)
+    mutateReceived(store, key, uniqueId, {
+      data: result,
+    })
   }
   store.commit(MUTATIONS.REQUEST, {key})
   store.dispatch(`${GLOBAL_NAMESPACE}/${GLOBAL_ACTIONS.REQUEST}`, uniqueId, {root: true})
