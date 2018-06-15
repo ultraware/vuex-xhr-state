@@ -1,6 +1,6 @@
 {
   "name": "vuex-xhr-state",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Use Vuex to manage the state of you're ajax calls.",
   "main": "dist/",
   "scripts": {
