@@ -96,7 +96,7 @@ export default class XhrState {
   }
 
   dataNamespace () {
-    return this.namespace + SEPARATOR + ACTION.DATA
+    return this.namespace + SEPARATOR + GET.DATA
   }
 
   fetch () {
