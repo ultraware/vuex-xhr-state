@@ -74,6 +74,3 @@ function getResolvingPromise (data) {
     resolve(data)
   })
 }
-
-
-

@@ -54,9 +54,7 @@ export const globalState = {
       state.activeLoaders = unique(state.activeLoaders)
     },
     [MUTATIONS.REMOVE_PENDING] (state, key) {
-      state.activeLoaders = unique(state.activeLoaders).filter(
-        p => p !== key,
-      )
+      state.activeLoaders = unique(state.activeLoaders).filter(p => p !== key)
     },
     [MUTATIONS.SET_ERROR] (state, payload) {
       // state.errorResponse[payload.key] = payload.response
