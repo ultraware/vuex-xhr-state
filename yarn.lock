@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@laura-wert/git-clean-status@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@laura-wert/git-clean-status/-/git-clean-status-1.0.0.tgz#faadfd2fb13da2b46ff6e90c3b631e9bea03b088"
+
 "@webassemblyjs/ast@1.5.12":
   version "1.5.12"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.5.12.tgz#a9acbcb3f25333c4edfa1fdf3186b1ccf64e6664"
