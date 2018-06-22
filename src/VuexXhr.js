@@ -103,6 +103,18 @@ export default class XhrState {
     return this.namespace + SEPARATOR + ACTION.FETCH
   }
 
+  send () {
+    return this.namespace + SEPARATOR + ACTION.SEND
+  }
+
+  invalidate () {
+    return this.namespace + SEPARATOR + ACTION.INVALIDATE
+  }
+
+  invalidateAll () {
+    return this.namespace + SEPARATOR + ACTION.INVALIDATE_ALL
+  }
+
   forceFetch () {
     if (!this.options.cache) {
       throw new Error('forceFetch is not available on this object')
@@ -157,6 +169,17 @@ export default class XhrState {
 
   setMethod (stub) {
     this.actions.method = stub
+  }
+
+  setVuexXhrCreator (vuexXhrCreator) {
+    this.vuexXhrCreator = vuexXhrCreator
+  }
+
+  /**
+   * Invalidate the cache of the group this method belongs to
+   */
+  inValidateGroup () {
+    this.vuexXhrCreator.invalidateAll()
   }
 
   mockCall (payload, data) {

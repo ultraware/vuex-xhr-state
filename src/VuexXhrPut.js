@@ -15,7 +15,7 @@ export class VuexXhrPut extends VuexXhr {
 
     this.state = state(this.options)
     this.mutations = mutations(this.options)
-    this.actions = actions(false, this.options.method)
+    this.actions = actions(false, this.options.method, this)
     this.getters = getters(false)
     if (this.options.store) {
       this.mergeStore(this.options.store)

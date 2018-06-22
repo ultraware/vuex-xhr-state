@@ -1,24 +1,27 @@
 const path = require('path')
-const webpack = require('webpack')
-const UglifyEsPlugin = require('uglify-es-webpack-plugin');
 
 module.exports = {
-  entry: path.resolve(__dirname, 'src/index.js'),
-  output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'vuex-xhr-state.js',
-    library: 'vuex-xhr-state',
-    libraryTarget: 'umd'
-  },
+  mode: 'production',
   module: {
-    loaders: [
-      { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ }
-    ]
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: [path.resolve(__dirname, './src')],
+      },
+    ],
   },
-  plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new UglifyEsPlugin({
-      compress: { warnings: false }
-    })
-  ]
+  resolve: {
+    extensions: ['.js'],
+    alias: {
+      src: path.resolve(__dirname, './src'),
+    },
+  },
+  entry: path.resolve(__dirname, './src/index.js'),
+  output: {
+    path: path.resolve(__dirname, './dist/'),
+    filename: 'index.js',
+    libraryTarget: 'umd',
+    library: 'uw-vue-helpers',
+  },
 }

@@ -16,14 +16,14 @@ export default (cache) => {
     }
     result[GET.DATA] = (state, getters, store) => (payload) => {
       const key = payloadToKey(payload)
-      if (state[STATE.FETCHED][key] && !state[STATE.ERROR][key]) {
+      if (state[STATE.RESPONSE][key] && !state[STATE.ERROR][key]) {
         return state[STATE.RESPONSE][key].data
       }
       return state[STATE.DEFAULT]
     }
-    result[GET.RESPONSE] = (state) => (payload) => {
-      return state[STATE.RESPONSE][payloadToKey(payload)]
-    }
+    result[GET.RESPONSE] = (state) => (payload) => state[STATE.RESPONSE][payloadToKey(payload)]
+
+    result[GET.PAYLOAD_KEYS] = state => () => Object.keys(state[STATE.RESPONSE])
   }
   return result
 }

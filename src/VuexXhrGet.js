@@ -5,7 +5,6 @@ import actions from './actions'
 import VuexXhr from './VuexXhr'
 
 export class VuexXhrGet extends VuexXhr {
-  // @todo implement cache
   // @todo getters state enz in this file?
   constructor (options) {
     super()
@@ -15,7 +14,7 @@ export class VuexXhrGet extends VuexXhr {
 
     this.state = state(this.options)
     this.mutations = mutations(this.options)
-    this.actions = actions(this.options.cache, this.options.method)
+    this.actions = actions(this.options.cache, this.options.method, this)
     this.getters = getters(this.options.cache)
     if (this.options.store) {
       this.mergeStore(this.options.store)

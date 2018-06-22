@@ -2,8 +2,13 @@ import { ACTION, GET, MUTATIONS } from './keys'
 import { payloadToKey } from './helpers'
 import { GLOBAL_ACTIONS, GLOBAL_NAMESPACE } from './globalXhrState'
 
-export default (cache, method) => {
+export default (cache, method, vuexXhr) => {
   const result = {
+    [ACTION.SEND]: function (store, payload) {
+      return runMethod(result.method, store, payload)
+        .then(() => vuexXhr.inValidateGroup())
+    },
+
     [ACTION.FETCH]: function (store, payload) {
       if (cache && store.getters[GET.PENDING](payload) && store.getters[GET.PENDING](payload)) {
         return getResolvingPromiseFromGetter(store, payload)
@@ -11,26 +16,32 @@ export default (cache, method) => {
       if (cache && store.getters[GET.FETCHED](payload) && store.getters[GET.FETCHED](payload)) {
         return getResolvingPromiseFromGetter(store, payload)
       }
-      return fetch(result.method, store, payload)
+      return runMethod(result.method, store, payload)
     },
+
     [ACTION.RESET]: function (store) {
       store.commit(MUTATIONS.RESET)
     },
   }
   if (cache) {
     result[ACTION.FORCE_FETCH] = (store, payload) => {
-      return fetch(result.method, store, payload)
+      return runMethod(result.method, store, payload)
     }
     result[ACTION.INVALIDATE] = (store, payload) => {
       const key = payloadToKey(payload)
       store.commit(MUTATIONS.INVALIDATE, {key})
+    }
+
+    result[ACTION.INVALIDATE_ALL] = (store) => {
+      const payloadKeys = store.getters[GET.PAYLOAD_KEYS]()
+      payloadKeys.forEach(key => store.commit(MUTATIONS.INVALIDATE, {key}))
     }
   }
   result.method = method
   return result
 }
 
-function fetch (method, store, payload) {
+function runMethod (method, store, payload) {
   let prom
   const result = method(payload)
   const key = payloadToKey(payload)
