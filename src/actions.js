@@ -5,8 +5,10 @@ import { GLOBAL_ACTIONS, GLOBAL_NAMESPACE } from './globalXhrState'
 export default (cache, method, vuexXhr) => {
   const result = {
     [ACTION.SEND]: function (store, payload) {
-      return runMethod(result.method, store, payload)
+      const methodPromise = runMethod(result.method, store, payload)
+      methodPromise
         .then(() => vuexXhr.inValidateGroup())
+      return methodPromise
     },
 
     [ACTION.FETCH]: function (store, payload) {
