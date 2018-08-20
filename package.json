@@ -20,6 +20,7 @@
     "loading"
   ],
   "author": "Rick Aikema",
+  "typings": "types/index.d.ts",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ultraware/vuex-xhr-state/issues"
@@ -30,7 +31,9 @@
     "husky": "^0.14.3",
     "js-md5": "^0.7.2",
     "vue": "^2.5.3",
+    "vue-class-component": "^6.2.0",
     "vuex": "^3.0.1",
+    "vuex-class": "^0.3.1",
     "webpack": "^4.12.0"
   },
   "devDependencies": {

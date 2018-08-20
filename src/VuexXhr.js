@@ -22,8 +22,8 @@ export default class XhrState {
     }
   }
 
-  setNamespace (namexpace) {
-    this.namespace = namexpace
+  setNamespace (namespace) {
+    this.namespace = namespace
   }
 
   mapPending (payload) {
