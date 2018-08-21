@@ -4,7 +4,10 @@
   "description": "Use Vuex to manage the state of you're ajax calls.",
   "main": "dist/",
   "scripts": {
-    "build": "yarn lint && rimraf ./dist && webpack --config ./webpack.config.js",
+    "build": "yarn lint && yarn clean && yarn build:ts && yarn build:main",
+    "build:ts": "tsc -p .",
+    "build:main": "webpack --config ./webpack.config.js",
+    "clean": "rimraf ./dist && rimraf ./types",
     "release": "yarn git-clean-status &&  yarn build && yarn publish",
     "lint": "eslint --ext .js src",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,7 +23,7 @@
     "loading"
   ],
   "author": "Rick Aikema",
-  "typings": "types/index.d.ts",
+  "typings": "lib/index.d.ts",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ultraware/vuex-xhr-state/issues"
@@ -30,13 +33,10 @@
     "@laura-wert/git-clean-status": "^1.0.0",
     "husky": "^0.14.3",
     "js-md5": "^0.7.2",
-    "vue": "^2.5.3",
-    "vue-class-component": "^6.2.0",
-    "vuex": "^3.0.1",
-    "vuex-class": "^0.3.1",
-    "webpack": "^4.12.0"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
+    "@types/js-md5": "^0.4.2",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
@@ -50,7 +50,10 @@
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-standard": "^3.1.0",
     "rimraf": "^2.6.2",
-    "webpack": "^4.11.1",
+    "typescript": "^3.0.1",
+    "vue-class-component": "^6.2.0",
+    "vuex-class": "^0.3.1",
+    "webpack": "^4.12.1",
     "webpack-cli": "^3.0.3"
   },
   "files": [
