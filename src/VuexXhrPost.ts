@@ -1,24 +1,12 @@
-import getters from './getters'
-import state from './state'
-import mutations from './mutations'
-import actions from './actions'
 import VuexXhr from './VuexXhr'
+import { VxsOptions } from './types'
 
-export class VuexXhrPost extends VuexXhr {
+export class VuexXhrPost<S, RS, P, D> extends VuexXhr<S, RS, P, D> {
   // @todo the pending prop uses the payload so for every put there is a pending in the state
   // @todo function fetch is not correct when we do put
-  constructor (options) {
-    super()
-    this.options = options || {}
-    this.namespaced = true
-    this.options.cache = false
-
-    this.state = state(this.options)
-    this.mutations = mutations(this.options)
-    this.actions = actions(false, this.options.method, this)
-    this.getters = getters(false)
-    if (this.options.store) {
-      this.mergeStore(this.options.store)
-    }
+  constructor (options: VxsOptions<D, S, P>) {
+    options = options || {}
+    options.cache = false
+    super(options)
   }
 }

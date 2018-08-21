@@ -1,6 +1,6 @@
 import { mapGetters } from 'vuex'
 
-export function mapXhrGetters (payload, getters) {
+export function mapXhrGetters (payload: any, getters?: any) {
   if (typeof getters === 'undefined') {
     getters = payload
     payload = undefined
@@ -10,7 +10,7 @@ export function mapXhrGetters (payload, getters) {
   return mapVuexGettersToXhrGetters(vuexGetters, payload, getters)
 }
 
-function mapGettersToVuexGetters (xhrGetters) {
+function mapGettersToVuexGetters (xhrGetters: any) {
   const vueXGetters = {}
   for (const index in xhrGetters) {
     if (xhrGetters.hasOwnProperty(index)) {
@@ -20,7 +20,7 @@ function mapGettersToVuexGetters (xhrGetters) {
   return mapGetters(vueXGetters)
 }
 
-function mapVuexGettersToXhrGetters (vuexGetters, payload, getters) {
+function mapVuexGettersToXhrGetters (vuexGetters: any, payload: any, getters: any) {
   const result = {}
   for (const key in vuexGetters) {
     if (vuexGetters.hasOwnProperty(key)) {

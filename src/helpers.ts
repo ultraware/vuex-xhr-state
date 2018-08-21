@@ -1,8 +1,8 @@
 import md5 from 'js-md5'
 
-export function payloadToKey (params) {
-  if (params === undefined) {
-    params = 'undefined'
+export function payloadToKey<P> (payload: P) {
+  if (payload === undefined) {
+    return md5(JSON.stringify('undefined'))
   }
-  return md5(JSON.stringify(params))
+  return md5(JSON.stringify(payload))
 }
