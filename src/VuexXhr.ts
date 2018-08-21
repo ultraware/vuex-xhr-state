@@ -1,16 +1,39 @@
-import { ACTION, GET, STATE } from './keys'
+import { ACTION, GET } from './keys'
 import { payloadToKey } from './helpers'
+import { VxsActionTree, VxsExtendedState, VxsExtendedStore, VxsMethod, VxsOptions, VxsResponse } from './types'
+import state from './state'
+import actions from './actions'
+import { GetterTree, Module, MutationTree } from 'vuex'
+import getters from './getters'
+import mutations from './mutations'
+import { VuexXhrCreator } from './VuexXhrCreator'
 
 const SEPARATOR = '/'
 
-export default class XhrState {
-  // constructor () {
-  //   if (new.target === XhrState) {
-  //     throw new TypeError('Cannot construct XhrState instances directly')
-  //   }
-  // }
+export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, S>, RS> {
+  private vuexXhrCreator?: VuexXhrCreator<S, RS, P, D>
+  public readonly state: VxsExtendedState<D, S>
+  public readonly namespaced: boolean
+  public namespace: string = ''
+  mutations: MutationTree<VxsExtendedState<D, S>>
+  actions: VxsActionTree<S, RS, P, D>
+  getters: GetterTree<VxsExtendedState<D, S>, RS>
+  options: VxsOptions<D, S, P>
 
-  mergeStore (store) {
+  constructor (options: VxsOptions<D, S, P>) {
+    this.namespaced = true
+    this.options = options
+    this.state = state(this.options)
+    this.mutations = mutations(this.options)
+    this.actions = actions(this.options.cache, this.options.method, this.inValidateGroup)
+    this.getters = getters(this.options.cache)
+
+    if (this.options.store) {
+      this.mergeStore(this.options.store)
+    }
+  }
+
+  mergeStore<S> (store: VxsExtendedStore<S>) {
     if (store.mutations) {
       Object.assign(this.mutations, store.mutations)
     }
@@ -22,48 +45,48 @@ export default class XhrState {
     }
   }
 
-  setNamespace (namespace) {
+  setNamespace (namespace: string) {
     this.namespace = namespace
   }
 
-  mapPending (payload) {
+  mapPending (payload: P) {
     return {key: this.namespace + SEPARATOR + GET.PENDING, payload}
   }
 
-  mapHasError (payload) {
+  mapHasError (payload: P) {
     if (!this.options.cache) {
       throw new Error('mapHasError is not available on this object')
     }
     return {key: this.namespace + SEPARATOR + GET.HAS_ERROR, payload}
   }
 
-  mapFetched (payload) {
+  mapFetched (payload: P) {
     if (!this.options.cache) {
       throw new Error('mapFetched is not available on this object')
     }
     return {key: this.namespace + SEPARATOR + GET.FETCHED, payload}
   }
 
-  mapData (payload) {
+  mapData (payload: P) {
     if (!this.options.cache) {
       throw new Error('mapData is not available on this object')
     }
     return {key: this.namespace + SEPARATOR + GET.DATA, payload}
   }
 
-  mapResponse (payload) {
+  mapResponse (payload: P) {
     if (!this.options.cache) {
       throw new Error('mapResponse is not available on this object')
     }
     return {key: this.namespace + SEPARATOR + GET.RESPONSE, payload}
   }
 
-  pending (getters, payload) {
+  pending (getters: any, payload: P) {
     const getter = this.findGetter(getters, GET.PENDING)
     return getter(payload)
   }
 
-  hasError (getters, payload) {
+  hasError (getters: any, payload: P) {
     if (!this.options.cache) {
       throw new Error('hasError is not available on this object')
     }
@@ -71,7 +94,7 @@ export default class XhrState {
     return getter(payload)
   }
 
-  fetched (getters, payload) {
+  fetched (getters: any, payload: P) {
     if (!this.options.cache) {
       throw new Error('fetched is not available on this object')
     }
@@ -79,7 +102,7 @@ export default class XhrState {
     return getter(payload)
   }
 
-  data (getters, payload) {
+  data (getters: any, payload: P) {
     if (!this.options.cache) {
       throw new Error('data is not available on this object')
     }
@@ -87,7 +110,7 @@ export default class XhrState {
     return getter(payload)
   }
 
-  response (getters, payload) {
+  response (getters: any, payload: P) {
     if (!this.options.cache) {
       throw new Error('response is not available on this object')
     }
@@ -127,7 +150,7 @@ export default class XhrState {
   }
 
   /** @private */
-  findGetter (getters, index) {
+  findGetter (getters: any, index: string) {
     if (typeof getters[this.namespace + SEPARATOR + index] !== 'undefined') {
       return getters[this.namespace + SEPARATOR + index]
     }
@@ -139,13 +162,13 @@ export default class XhrState {
     throw new Error('VuexXhr Error. Getter not found (' + index + ')' + this.namespace)
   }
 
-  setState (payload, mockState) {
+  setState (payload: any, mockState: any) {
     if (mockState === undefined) {
       mockState = payload
       payload = undefined
     }
 
-    if (!mockState.data && !mockState.response) {
+    if (mockState.data && !mockState.response) {
       mockState = {
         error: false,
         pending: false,
@@ -155,23 +178,23 @@ export default class XhrState {
       }
     }
 
-    if (mockState.data && !mockState.response) {
-      mockState.response = {
-        data: mockState.data,
-      }
-    }
+    // if (mockState.data && !mockState.response) {
+    //   mockState.response = {
+    //     data: mockState.data,
+    //   }
+    // }
 
-    this.state[STATE.ERROR][payloadToKey(payload)] = mockState.error
-    this.state[STATE.FETCHED][payloadToKey(payload)] = (mockState.response)
-    this.state[STATE.PENDING][payloadToKey(payload)] = mockState.pending
-    this.state[STATE.RESPONSE][payloadToKey(payload)] = mockState.response
+    this.state['ERROR'][payloadToKey(payload)] = mockState.error
+    this.state['FETCHED'][payloadToKey(payload)] = (mockState.response)
+    this.state['PENDING'][payloadToKey(payload)] = mockState.pending
+    this.state['RESPONSE'][payloadToKey(payload)] = mockState.response
   }
 
-  setMethod (stub) {
+  setMethod (stub: VxsMethod<P, D>) {
     this.actions.method = stub
   }
 
-  setVuexXhrCreator (vuexXhrCreator) {
+  setVuexXhrCreator (vuexXhrCreator: VuexXhrCreator<S, RS, P, D>) {
     this.vuexXhrCreator = vuexXhrCreator
   }
 
@@ -179,11 +202,14 @@ export default class XhrState {
    * Invalidate the cache of the group this method belongs to
    */
   inValidateGroup () {
+    if (!this.vuexXhrCreator) {
+      return
+    }
     this.vuexXhrCreator.invalidateAll()
   }
 
-  mockCall (payload, data) {
-    const promise = new Promise(function (resolve, reject) {
+  mockCall (_payload: any, data: D) {
+    const promise = new Promise<VxsResponse<D>>(function (resolve) {
       resolve({
         data,
       })

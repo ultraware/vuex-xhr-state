@@ -1,21 +1,13 @@
-import getters from './getters'
-import state from './state'
-import mutations from './mutations'
-import actions from './actions'
 import VuexXhr from './VuexXhr'
+import { VxsOptions } from './types'
 
-export class VuexXhrGet extends VuexXhr {
+export class VuexXhrGet<S, RS, P, D> extends VuexXhr<S, RS, P, D> {
   // @todo getters state enz in this file?
-  constructor (options) {
-    super()
-    this.options = options || {}
-    this.namespaced = true
-    this.options.cache = (typeof this.options.cache === 'undefined' ? true : this.options.cache)
+  constructor (options: VxsOptions<D, S, P>) {
+    options = options || {}
+    options.cache = (typeof options.cache === 'undefined' ? true : options.cache)
+    super(options)
 
-    this.state = state(this.options)
-    this.mutations = mutations(this.options)
-    this.actions = actions(this.options.cache, this.options.method, this)
-    this.getters = getters(this.options.cache)
     if (this.options.store) {
       this.mergeStore(this.options.store)
     }

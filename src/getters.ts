@@ -1,29 +1,34 @@
-import { GET, STATE } from './keys'
+import { GET } from './keys'
 import { payloadToKey } from './helpers'
+import { GetterTree } from 'vuex'
+import { VxsState } from './types'
 
-export default (cache) => {
-  const result = {
-    [GET.PENDING]: (state) => (payload) => {
-      return state[STATE.PENDING][payloadToKey(payload)]
+export default <S, RS, P> (cache: boolean): GetterTree<VxsState<S>, RS> => {
+  const result = <GetterTree<VxsState<S>, RS>>{
+    [GET.PENDING]: (state: VxsState<S>) => (payload: P) => {
+      return state['PENDING'][payloadToKey(payload)]
     },
   }
-  if (cache) {
-    result[GET.HAS_ERROR] = (state) => (payload) => {
-      return state[STATE.ERROR][payloadToKey(payload)]
-    }
-    result[GET.FETCHED] = (state) => (payload) => {
-      return state[STATE.FETCHED][payloadToKey(payload)]
-    }
-    result[GET.DATA] = (state, getters, store) => (payload) => {
-      const key = payloadToKey(payload)
-      if (state[STATE.RESPONSE][key] && !state[STATE.ERROR][key]) {
-        return state[STATE.RESPONSE][key].data
-      }
-      return state[STATE.DEFAULT]
-    }
-    result[GET.RESPONSE] = (state) => (payload) => state[STATE.RESPONSE][payloadToKey(payload)]
 
-    result[GET.PAYLOAD_KEYS] = state => () => Object.keys(state[STATE.RESPONSE])
+  if (cache) {
+    result[GET.HAS_ERROR] = (state: VxsState<S>) => (payload: P) => {
+      return state['ERROR'][payloadToKey(payload)]
+    }
+    result[GET.FETCHED] = (state: VxsState<S>) => (payload: P) => {
+      return state['FETCHED'][payloadToKey(payload)]
+    }
+    result[GET.DATA] = (state: VxsState<S>) => (payload: P) => {
+      const key = payloadToKey(payload)
+      if (state['RESPONSE'][key] && !state['ERROR'][key]) {
+        // @todo split response en error response in different state variable
+        // @ts-ignore
+        return state['RESPONSE'][key].data
+      }
+      return state['DEFAULT']
+    }
+    result[GET.RESPONSE] = (state: VxsState<S>) => (payload: P) => state['RESPONSE'][payloadToKey(payload)]
+
+    result[GET.PAYLOAD_KEYS] = (state: VxsState<S>) => () => Object.keys(state['RESPONSE'])
   }
   return result
 }

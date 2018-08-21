@@ -33,6 +33,7 @@
     "@laura-wert/git-clean-status": "^1.0.0",
     "husky": "^0.14.3",
     "js-md5": "^0.7.2",
+    "vue": "^2.5.17",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
