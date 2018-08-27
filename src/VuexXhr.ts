@@ -11,7 +11,7 @@ import { VuexXhrCreator } from './VuexXhrCreator'
 const SEPARATOR = '/'
 
 export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, S>, RS> {
-  private vuexXhrCreator?: VuexXhrCreator<S, RS, P, D>
+  private vuexXhrCreator?: VuexXhrCreator
   public readonly state: VxsExtendedState<D, S>
   public readonly namespaced: boolean
   public namespace: string = ''
@@ -23,17 +23,17 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
   constructor (options: VxsOptions<D, S, P>) {
     this.namespaced = true
     this.options = options
-    this.state = state(this.options)
-    this.mutations = mutations(this.options)
-    this.actions = actions(this.options.cache, this.options.method, this.inValidateGroup)
-    this.getters = getters(this.options.cache)
+    this.state = state<D, S, P>(this.options)
+    this.mutations = mutations<S, D>(this.options)
+    this.actions = actions<S, RS, P, D>(this.options.cache ? this.options.cache : true, this.options.method, this.inValidateGroup)
+    this.getters = getters<RS, D, P>(this.options.cache ? this.options.cache : true)
 
     if (this.options.store) {
       this.mergeStore(this.options.store)
     }
   }
 
-  mergeStore<S> (store: VxsExtendedStore<S>) {
+  mergeStore (store: VxsExtendedStore<any>): void {
     if (store.mutations) {
       Object.assign(this.mutations, store.mutations)
     }
@@ -45,7 +45,7 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     }
   }
 
-  setNamespace (namespace: string) {
+  setNamespace (namespace: string): void {
     this.namespace = namespace
   }
 
@@ -194,7 +194,7 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     this.actions.method = stub
   }
 
-  setVuexXhrCreator (vuexXhrCreator: VuexXhrCreator<S, RS, P, D>) {
+  setVuexXhrCreator (vuexXhrCreator: VuexXhrCreator) {
     this.vuexXhrCreator = vuexXhrCreator
   }
 
