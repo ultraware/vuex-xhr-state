@@ -8,14 +8,14 @@ export interface VxsResponse<D> {
 }
 
 export interface VxsOptions<D, S, P> {
-  default: D
-  store: VxsExtendedStore<S>
-  cache: boolean
   method: VxsMethod<P, D>
+  default?: D
+  store?: VxsExtendedStore<S>
+  cache?: boolean
 }
 
 export interface VxsMethod<P, D> {
-  (_: P): Promise<VxsResponse<D>> | D
+  (_?: P): Promise<VxsResponse<D>> | D
 }
 
 export interface VxsExtendedStore<S> {
@@ -29,8 +29,12 @@ export interface VxsState<D> {
   PENDING: { [_: string]: boolean }
   ERROR: { [_: string]: boolean }
   FETCHED: { [_: string]: boolean }
-  DEFAULT: D
+  DEFAULT?: D
   RESPONSE: { [_: string]: VxsErrorResponse | VxsResponse<D> }
+}
+
+export interface VxsModuleState {
+  [_: string]: VxsState<any>
 }
 
 export interface MockState<D> {

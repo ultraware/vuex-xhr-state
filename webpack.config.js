@@ -20,6 +20,7 @@ module.exports = {
   externals: {
     'js-md5': 'js-md5',
     vuex: 'vuex',
+    'vue-class-component': 'vue-class-component',
   },
   entry: path.resolve(__dirname, './lib/index.js'),
   output: {

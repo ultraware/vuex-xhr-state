@@ -1,6 +1,8 @@
 // import { iVuexXhr } from './index'
-import { createDecorator } from 'vue-class-component'
 import VuexXhr from './VuexXhr'
+import { Action } from 'vuex-class'
+import { createDecorator } from 'vue-class-component'
+import { ACTION } from './keys'
 
 // Actions
 // export function vxsAction (method: string, call: iVuexXhr) {
@@ -9,10 +11,7 @@ import VuexXhr from './VuexXhr'
 
 // @ts-ignore
 export function vxsActionFetch (call: VuexXhr): any {
-  // @ts-ignore
-  return createDecorator((componentOptions: any, key: any) => {
-  })
-  // return Action('_xhr_fetch', <BindingOptions>{namespace: call.namespace})
+  return Action(ACTION.FETCH, {namespace: call.namespace})
 }
 
 // export function temp (param, param2) {
@@ -39,38 +38,43 @@ export function vxsActionFetch (call: VuexXhr): any {
 //   return helper
 // }
 
-// export function vxsActionSend (call: iVuexXhr) {
-//   return Action(ACTION.SEND, {namespace: call.namespace})
-// }
-//
-// export function vxsActionForcefetch (call: iVuexXhr) {
-//   return Action(ACTION.FORCE_FETCH, {namespace: call.namespace})
-// }
-//
-// export function vxsActionReset (call: iVuexXhr) {
-//   return Action(ACTION.RESET, {namespace: call.namespace})
-// }
-//
-// export function vxsActionInvalidate (call: iVuexXhr) {
-//   return Action(ACTION.INVALIDATE, {namespace: call.namespace})
-// }
-//
-// export function vxsActionInvalidateAll (call: iVuexXhr) {
-//   return Action(ACTION.INVALIDATE_ALL, {namespace: call.namespace})
-// }
-//
-// // Getters
-// export function vxsDataGetter (call: iVuexXhr) {
-//   return createDecorator((componentOptions, key) => {
-//     if (!componentOptions['methods']) {
-//       componentOptions['methods'] = {}
-//     }
-//
-//     componentOptions['methods']![key] = function (payload) {
-//       return call.data(this.$store.getters, payload)
-//     }
-//   })
-// }
+// @ts-ignore
+export function vxsActionSend (call: VuexXhr) {
+  return Action(ACTION.SEND, {namespace: call.namespace})
+}
+
+// @ts-ignore
+export function vxsActionForcefetch (call: VuexXhr) {
+  return Action(ACTION.FORCE_FETCH, {namespace: call.namespace})
+}
+
+// @ts-ignore
+export function vxsActionReset (call: VuexXhr) {
+  return Action(ACTION.RESET, {namespace: call.namespace})
+}
+
+// @ts-ignore
+export function vxsActionInvalidate (call: VuexXhr) {
+  return Action(ACTION.INVALIDATE, {namespace: call.namespace})
+}
+
+// @ts-ignore
+export function vxsActionInvalidateAll (call: VuexXhr) {
+  return Action(ACTION.INVALIDATE_ALL, {namespace: call.namespace})
+}
+
+// Getters
+export function vxsDataGetter (call: VuexXhr<any, any, any, any>) {
+  return createDecorator((componentOptions, key) => {
+    if (!componentOptions['methods']) {
+      componentOptions['methods'] = {}
+    }
+
+    componentOptions['methods']![key] = function (payload) {
+      return call.data(this.$store.getters, payload)
+    }
+  })
+}
 
 // export function vxsPendingGetter (call: iVuexXhr) {
 //   return createDecorator((componentOptions, key) => {

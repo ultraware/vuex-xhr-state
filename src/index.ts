@@ -6,6 +6,7 @@ export { VuexXhrCreator } from './VuexXhrCreator'
 export { VuexXhrGet } from './VuexXhrGet'
 export { VuexXhrPut } from './VuexXhrPut'
 export { VuexXhrPost } from './VuexXhrPost'
+export * from './decorators'
 
 export default {
   install: function (Vue: typeof _Vue) {
