@@ -3,9 +3,9 @@ import { payloadToKey } from './helpers'
 import { VxsActionTree, VxsExtendedState, VxsExtendedStore, VxsMethod, VxsOptions, VxsResponse } from './types'
 import state from './state'
 import actions from './actions'
+import mutations from './mutations'
 import { GetterTree, Module, MutationTree } from 'vuex'
 import getters from './getters'
-import mutations from './mutations'
 import { VuexXhrCreator } from './VuexXhrCreator'
 
 const SEPARATOR = '/'
@@ -24,7 +24,7 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     this.namespaced = true
     this.options = options
     this.state = state<D, S, P>(this.options)
-    this.mutations = mutations<S, D>(this.options)
+    this.mutations = mutations<D, S>(this.options)
     this.actions = actions<S, RS, P, D>(this.options.cache ? this.options.cache : true, this.options.method, this.inValidateGroup)
     this.getters = getters<RS, D, P>(this.options.cache ? this.options.cache : true)
 
@@ -33,7 +33,7 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     }
   }
 
-  mergeStore (store: VxsExtendedStore<any>): void {
+  mergeStore (store: VxsExtendedStore<D, S, RS>): void {
     if (store.mutations) {
       Object.assign(this.mutations, store.mutations)
     }
@@ -86,7 +86,7 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     return getter(payload)
   }
 
-  hasError (getters: any, payload: P) {
+  hasError (getters: any, payload?: P) {
     if (!this.options.cache) {
       throw new Error('hasError is not available on this object')
     }
@@ -94,7 +94,7 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     return getter(payload)
   }
 
-  fetched (getters: any, payload: P) {
+  fetched (getters: any, payload?: P) {
     if (!this.options.cache) {
       throw new Error('fetched is not available on this object')
     }
@@ -102,7 +102,7 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     return getter(payload)
   }
 
-  data (getters: any, payload: P) {
+  data (getters: any, payload?: P): D {
     if (!this.options.cache) {
       throw new Error('data is not available on this object')
     }
@@ -110,7 +110,7 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     return getter(payload)
   }
 
-  response (getters: any, payload: P) {
+  response (getters: any, payload?: P): VxsResponse<D> {
     if (!this.options.cache) {
       throw new Error('response is not available on this object')
     }
