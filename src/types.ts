@@ -7,21 +7,24 @@ export interface VxsResponse<D> {
   data: D
 }
 
-export interface VxsOptions<D, S, P> {
+export interface VxsPromise<D> extends Promise<VxsResponse<D>> {
+}
+
+export interface VxsOptions<D, S = any, P = any, RS = any> {
   method: VxsMethod<P, D>
   default?: D
-  store?: VxsExtendedStore<S>
+  store?: VxsExtendedStore<D, S, RS>
   cache?: boolean
 }
 
 export interface VxsMethod<P, D> {
-  (_?: P): Promise<VxsResponse<D>> | D
+  (_: P): VxsPromise<D> | D
 }
 
-export interface VxsExtendedStore<S> {
-  actions?: ActionTree<S, S>
-  mutations?: MutationTree<S>
-  getters?: GetterTree<S, S>
+export interface VxsExtendedStore<D, S = object, RS = object> {
+  actions?: ActionTree<VxsExtendedState<D, S>, RS>
+  mutations?: MutationTree<VxsExtendedState<D, S>>
+  getters?: GetterTree<VxsExtendedState<D, S>, RS>
   state?: S
 }
 
@@ -30,7 +33,7 @@ export interface VxsState<D> {
   ERROR: { [_: string]: boolean }
   FETCHED: { [_: string]: boolean }
   DEFAULT?: D
-  RESPONSE: { [_: string]: VxsErrorResponse | VxsResponse<D> }
+  RESPONSE: { [_: string]: VxsResponse<D> | VxsErrorResponse }
 }
 
 export interface VxsModuleState {
