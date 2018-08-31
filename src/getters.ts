@@ -3,7 +3,7 @@ import { payloadToKey } from './helpers'
 import { GetterTree } from 'vuex'
 import { VxsState } from './types'
 
-export default <RS, D, P> (cache: boolean): GetterTree<VxsState<D>, RS> => {
+export default <D, P, RS> (cache: boolean): GetterTree<VxsState<D>, RS> => {
   const result = <GetterTree<VxsState<D>, RS>>{
     [GET.PENDING]: (state: VxsState<D>) => (payload: P) => {
       return state['PENDING'][payloadToKey(payload)]

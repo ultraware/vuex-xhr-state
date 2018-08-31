@@ -18,15 +18,15 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
   mutations: MutationTree<VxsExtendedState<D, S>>
   actions: VxsActionTree<S, RS, P, D>
   getters: GetterTree<VxsExtendedState<D, S>, RS>
-  options: VxsOptions<D, S, P>
+  options: VxsOptions<D, P, S>
 
-  constructor (options: VxsOptions<D, S, P>) {
+  constructor (options: VxsOptions<D, P, S>) {
     this.namespaced = true
     this.options = options
-    this.state = state<D, S, P>(this.options)
+    this.state = state<D, P, S>(this.options)
     this.mutations = mutations<D, S>(this.options)
-    this.actions = actions<S, RS, P, D>(this.options.cache ? this.options.cache : true, this.options.method, this.inValidateGroup)
-    this.getters = getters<RS, D, P>(this.options.cache ? this.options.cache : true)
+    this.actions = actions<D, P, S, RS>(this.options.cache ? this.options.cache : true, this.options.method, this.inValidateGroup)
+    this.getters = getters<D, P, RS>(this.options.cache ? this.options.cache : true)
 
     if (this.options.store) {
       this.mergeStore(this.options.store)

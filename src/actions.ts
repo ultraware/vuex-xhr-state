@@ -4,7 +4,7 @@ import { GLOBAL_ACTIONS, GLOBAL_NAMESPACE } from './globalXhrState'
 import { ActionContext } from 'vuex'
 import { VxsActionTree, VxsExtendedState, VxsMethod, VxsResponse } from './types'
 
-export default <S, RS, P, D> (cache: boolean, method: VxsMethod<P, D>, inValidateGroup: () => void): VxsActionTree<S, RS, P, D> => {
+export default <D, P, S, RS> (cache: boolean, method: VxsMethod<P, D>, inValidateGroup: () => void): VxsActionTree<S, RS, P, D> => {
   const result = <VxsActionTree<S, RS, P, D>>{
     [ACTION.SEND]: function (store: ActionContext<VxsExtendedState<D, S>, RS>, payload: P): Promise<VxsResponse<D>> {
       const methodPromise = runMethod(result.method, store, payload)

@@ -10,7 +10,7 @@ export interface VxsResponse<D> {
 export interface VxsPromise<D> extends Promise<VxsResponse<D>> {
 }
 
-export interface VxsOptions<D, S = any, P = any, RS = any> {
+export interface VxsOptions<D, P = any, S = any, RS = any> {
   method: VxsMethod<P, D>
   default?: D
   store?: VxsExtendedStore<D, S, RS>
