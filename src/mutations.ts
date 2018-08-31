@@ -3,7 +3,7 @@ import initialState from './state'
 import { MutationTree } from 'vuex'
 import { VxsExtendedState, VxsOptions, VxsState } from './types'
 
-export default <D, S> (options: VxsOptions<D, S, any>): MutationTree<VxsExtendedState<D, S>> => {
+export default <D, S> (options: VxsOptions<D, any, S>): MutationTree<VxsExtendedState<D, S>> => {
   return <MutationTree<VxsExtendedState<D, S>>>{
     [MUTATIONS.REQUEST] (state: VxsState<S>, payload: any) {
       state['PENDING'] = Object.assign({}, state['PENDING'], {[payload.key]: true})

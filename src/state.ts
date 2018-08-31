@@ -1,6 +1,6 @@
 import { VxsExtendedState, VxsOptions } from './types'
 
-export default <D, S, P> (options: VxsOptions<D, S, P>): VxsExtendedState<D, S> => {
+export default <D, P, S> (options: VxsOptions<D, P, S>): VxsExtendedState<D, S> => {
   const state = <VxsExtendedState<D, S>>{
     PENDING: {},
   }
