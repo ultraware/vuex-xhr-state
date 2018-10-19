@@ -59,6 +59,7 @@
   },
   "files": [
     "package.json",
-    "dist/"
+    "dist/",
+    "lib/"
   ]
 }
