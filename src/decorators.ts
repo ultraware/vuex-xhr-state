@@ -9,33 +9,27 @@ import { ACTION } from './keys'
 //   return Action(method, {namespace: call.namespace})
 // }
 
-// @ts-ignore
-export function vxsActionFetch (call: VuexXhr): any {
+export function vxsActionFetch (call: VuexXhr<any, any, any, any>): any {
   return Action(ACTION.FETCH, {namespace: call.namespace})
 }
 
-// @ts-ignore
-export function vxsActionSend (call: VuexXhr): any {
+export function vxsActionSend (call: VuexXhr<any, any, any, any>): any {
   return Action(ACTION.SEND, {namespace: call.namespace})
 }
 
-// @ts-ignore
-export function vxsActionForcefetch (call: VuexXhr): any {
+export function vxsActionForcefetch (call: VuexXhr<any, any, any, any>): any {
   return Action(ACTION.FORCE_FETCH, {namespace: call.namespace})
 }
 
-// @ts-ignore
-export function vxsActionReset (call: VuexXhr): any {
+export function vxsActionReset (call: VuexXhr<any, any, any, any>): any {
   return Action(ACTION.RESET, {namespace: call.namespace})
 }
 
-// @ts-ignore
-export function vxsActionInvalidate (call: VuexXhr): any {
+export function vxsActionInvalidate (call: VuexXhr<any, any, any, any>): any {
   return Action(ACTION.INVALIDATE, {namespace: call.namespace})
 }
 
-// @ts-ignore
-export function vxsActionInvalidateAll (call: VuexXhr): any {
+export function vxsActionInvalidateAll (call: VuexXhr<any, any, any, any>): any {
   return Action(ACTION.INVALIDATE_ALL, {namespace: call.namespace})
 }
 
@@ -52,8 +46,7 @@ export function vxsDataGetter (call: VuexXhr<any, any, any, any>) {
   })
 }
 
-// @ts-ignore
-export function vxsPendingGetter (call: VuexXhr) {
+export function vxsPendingGetter (call: VuexXhr<any, any, any, any>) {
   return createDecorator((componentOptions, key) => {
     if (!componentOptions['methods']) {
       componentOptions['methods'] = {}
@@ -64,8 +57,8 @@ export function vxsPendingGetter (call: VuexXhr) {
     }
   })
 }
-// @ts-ignore
-export function vxsHasErrorGetter (call: VuexXhr) {
+
+export function vxsHasErrorGetter (call: VuexXhr<any, any, any, any>) {
   return createDecorator((componentOptions, key) => {
     if (!componentOptions['methods']) {
       componentOptions['methods'] = {}
@@ -76,8 +69,8 @@ export function vxsHasErrorGetter (call: VuexXhr) {
     }
   })
 }
-// @ts-ignore
-export function vxsFetchedGetter (call: VuexXhr) {
+
+export function vxsFetchedGetter (call: VuexXhr<any, any, any, any>) {
   return createDecorator((componentOptions, key) => {
     if (!componentOptions['methods']) {
       componentOptions['methods'] = {}
@@ -88,8 +81,8 @@ export function vxsFetchedGetter (call: VuexXhr) {
     }
   })
 }
-// @ts-ignore
-export function vxsResponseGetter (call: VuexXhr) {
+
+export function vxsResponseGetter (call: VuexXhr<any, any, any, any>) {
   return createDecorator((componentOptions, key) => {
     if (!componentOptions['methods']) {
       componentOptions['methods'] = {}
