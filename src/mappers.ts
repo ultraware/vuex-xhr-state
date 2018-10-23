@@ -1,6 +1,8 @@
-import { mapGetters } from 'vuex'
+import { Dictionary, mapGetters } from 'vuex'
+import { Computed } from '../node_modules/vuex/types/helpers'
 
-export function mapXhrGetters (payload: any, getters?: any) {
+// tslint:disable-next-line: no-any
+export function mapXhrGetters(payload: any, getters?: any): object {
   if (typeof getters === 'undefined') {
     getters = payload
     payload = undefined
@@ -10,7 +12,7 @@ export function mapXhrGetters (payload: any, getters?: any) {
   return mapVuexGettersToXhrGetters(vuexGetters, payload, getters)
 }
 
-function mapGettersToVuexGetters (xhrGetters: any) {
+function mapGettersToVuexGetters(xhrGetters: object): Dictionary<Computed> {
   const vueXGetters = {}
   for (const index in xhrGetters) {
     if (xhrGetters.hasOwnProperty(index)) {
@@ -20,11 +22,11 @@ function mapGettersToVuexGetters (xhrGetters: any) {
   return mapGetters(vueXGetters)
 }
 
-function mapVuexGettersToXhrGetters (vuexGetters: any, payload: any, getters: any) {
+function mapVuexGettersToXhrGetters(vuexGetters: object, payload: unknown, getters: object): object {
   const result = {}
   for (const key in vuexGetters) {
     if (vuexGetters.hasOwnProperty(key)) {
-      result[key] = function () {
+      result[key] = function(): unknown {
         vuexGetters[key] = vuexGetters[key].bind(this)
         payload = (getters[key].payload ? getters[key].payload : payload)
         return vuexGetters[key]()(payload)

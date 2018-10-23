@@ -1,21 +1,21 @@
-import { GLOBAL_GETTERS, GLOBAL_NAMESPACE, globalStore } from './globalXhrState'
-import VuexXhr from './VuexXhr'
 import { Plugin, Store } from 'vuex'
-import { VxsModuleState } from './types'
+import { GLOBAL_GETTERS, GLOBAL_NAMESPACE, globalStore } from './globalXhrState'
+import { IVxsModuleState } from './types'
+import VuexXhr from './VuexXhr'
 
 export class VuexXhrCreator {
   public namespace: string
   public modules: {}
-  public store?: Store<any>
+  public store?: Store<unknown>
 
-  constructor (namespace: string, xhrStores: Array<VuexXhr<any, any, any, any>>) {
+  constructor(namespace: string, xhrStores: Array<VuexXhr<unknown, unknown, unknown, unknown>>) {
     this.namespace = namespace
     this.modules = this.xhrStoresToModules(xhrStores)
   }
 
-  plugin (): Plugin<any> {
+  public plugin(): Plugin<unknown> {
     const self = this
-    return function (store: Store<any>) {
+    return (store: Store<unknown>): void => {
       self.store = store
       if (!(GLOBAL_NAMESPACE + '/' + GLOBAL_GETTERS.ANY_PENDING in store.getters)) {
         store.registerModule('globalXhrState', globalStore)
@@ -27,14 +27,14 @@ export class VuexXhrCreator {
     }
   }
 
-  reset ($store: Store<VxsModuleState>) {
+  public reset($store: Store<IVxsModuleState>): void {
     for (const prop in this.modules) {
       if (!this.modules.hasOwnProperty(prop)) continue
       $store.dispatch(this.modules[prop].reset())
     }
   }
 
-  invalidateAll () {
+  public invalidateAll(): void {
     if (!this.store) {
       return
     }
@@ -45,7 +45,9 @@ export class VuexXhrCreator {
     }
   }
 
-  xhrStoresToModules (xhrStores: Array<VuexXhr<any, any, any, any>>) {
+  public xhrStoresToModules(
+    xhrStores: Array<VuexXhr<unknown, unknown, unknown, unknown>>,
+  ): { [_: string]: VuexXhr<unknown, unknown, unknown, unknown> } {
     const modules = {}
     xhrStores.forEach((xhrStore, index) => {
       xhrStore.setVuexXhrCreator(this)
