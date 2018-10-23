@@ -1,0 +1,46 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "node_modules/**"
+    ]
+  },
+  "rules": {
+    "no-any": true,
+    "typedef": [
+      true,
+      "call-signature",
+      "arrow-call-signature",
+      "parameter",
+      "property-declaration",
+      "member-variable-declaration",
+      "object-destructuring",
+      "array-destructuring"
+    ],
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "interface-name": [
+      true,
+      "always-prefix"
+    ],
+    "semicolon": [
+      true,
+      "never"
+    ],
+    "curly": [
+      true,
+      "ignore-same-line"
+    ],
+    "no-angle-bracket-type-assertion": false,
+    "no-console": {
+      "severity": "warning"
+    },
+    "object-literal-sort-keys": false
+  },
+  "rulesDirectory": []
+}
