@@ -2,6 +2,7 @@ import _Vue, { PluginObject } from 'vue'
 import { GLOBAL_ACTIONS, GLOBAL_GETTERS, GLOBAL_NAMESPACE } from './globalXhrState'
 
 export * from './decorators'
+export * from './types'
 export { mapXhrGetters } from './mappers'
 export { VuexXhrCreator } from './VuexXhrCreator'
 export { VuexXhrGet } from './VuexXhrGet'
