@@ -1,6 +1,6 @@
 {
   "name": "vuex-xhr-state",
-  "version": "0.2.3",
+  "version": "0.2.5",
   "description": "Use Vuex to manage the state of you're ajax calls.",
   "main": "dist/",
   "scripts": {
@@ -32,13 +32,13 @@
   "dependencies": {
     "js-md5": "^0.7.2",
     "vue": "^2.5.17",
-    "vuex": "^3.0.1",
     "vue-class-component": "^6.2.0",
+    "vuex": "^3.0.1",
     "vuex-class": "^0.3.1"
   },
   "devDependencies": {
-    "@types/js-md5": "^0.4.2",
     "@laura-wert/git-clean-status": "^1.0.0",
+    "@types/js-md5": "^0.4.2",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
