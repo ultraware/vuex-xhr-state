@@ -13,7 +13,7 @@ export class VuexXhrCreator {
     this.modules = this.xhrStoresToModules(xhrStores)
   }
 
-  public plugin(): Plugin<unknown> {
+  public plugin = (): Plugin<unknown> => {
     const self = this
     return (store: Store<unknown>): void => {
       self.store = store
@@ -27,14 +27,14 @@ export class VuexXhrCreator {
     }
   }
 
-  public reset($store: Store<IVxsModuleState>): void {
+  public reset = ($store: Store<IVxsModuleState>): void => {
     for (const prop in this.modules) {
       if (!this.modules.hasOwnProperty(prop)) continue
       $store.dispatch(this.modules[prop].reset())
     }
   }
 
-  public invalidateAll(): void {
+  public invalidateAll = (): void => {
     if (!this.store) {
       return
     }
@@ -45,9 +45,9 @@ export class VuexXhrCreator {
     }
   }
 
-  public xhrStoresToModules(
+  public xhrStoresToModules = (
     xhrStores: Array<VuexXhr<unknown, unknown, unknown, unknown>>,
-  ): { [_: string]: VuexXhr<unknown, unknown, unknown, unknown> } {
+  ): { [_: string]: VuexXhr<unknown, unknown, unknown, unknown> } => {
     const modules = {}
     xhrStores.forEach((xhrStore, index) => {
       xhrStore.setVuexXhrCreator(this)

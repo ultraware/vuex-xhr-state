@@ -42,48 +42,48 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     }
   }
 
-  public setNamespace(namespace: string): void {
+  public setNamespace = (namespace: string): void => {
     this.namespace = namespace
   }
 
-  public mapPending(payload: P): IMapResult<P> {
+  public mapPending = (payload: P): IMapResult<P> => {
     return {key: this.namespace + SEPARATOR + GET.PENDING, payload}
   }
 
-  public mapHasError(payload: P): IMapResult<P> {
+  public mapHasError = (payload: P): IMapResult<P> => {
     if (!this.options.cache) {
       throw new Error('mapHasError is not available on this object')
     }
     return {key: this.namespace + SEPARATOR + GET.HAS_ERROR, payload}
   }
 
-  public mapFetched(payload: P): IMapResult<P> {
+  public mapFetched = (payload: P): IMapResult<P> => {
     if (!this.options.cache) {
       throw new Error('mapFetched is not available on this object')
     }
     return {key: this.namespace + SEPARATOR + GET.FETCHED, payload}
   }
 
-  public mapData(payload: P): IMapResult<P> {
+  public mapData = (payload: P): IMapResult<P> => {
     if (!this.options.cache) {
       throw new Error('mapData is not available on this object')
     }
     return {key: this.namespace + SEPARATOR + GET.DATA, payload}
   }
 
-  public mapResponse(payload: P): IMapResult<P> {
+  public mapResponse = (payload: P): IMapResult<P> => {
     if (!this.options.cache) {
       throw new Error('mapResponse is not available on this object')
     }
     return {key: this.namespace + SEPARATOR + GET.RESPONSE, payload}
   }
 
-  public pending(getters: Array<unknown>, payload: P): unknown {
+  public pending = (getters: Array<unknown>, payload: P): unknown => {
     const getter = this.findGetter(getters, GET.PENDING)
     return getter(payload)
   }
 
-  public hasError(getters: Array<unknown>, payload?: P): unknown {
+  public hasError = (getters: Array<unknown>, payload?: P): unknown => {
     if (!this.options.cache) {
       throw new Error('hasError is not available on this object')
     }
@@ -91,7 +91,7 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     return getter(payload)
   }
 
-  public fetched(getters: Array<unknown>, payload?: P): unknown {
+  public fetched = (getters: Array<unknown>, payload?: P): unknown => {
     if (!this.options.cache) {
       throw new Error('fetched is not available on this object')
     }
@@ -99,7 +99,7 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     return getter(payload)
   }
 
-  public data(getters: Array<unknown>, payload?: P): D | unknown {
+  public data = (getters: Array<unknown>, payload?: P): D | unknown => {
     if (!this.options.cache) {
       throw new Error('data is not available on this object')
     }
@@ -107,7 +107,7 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     return getter(payload)
   }
 
-  public response(getters: Array<unknown>, payload?: P): IVxsResponse<D> | unknown {
+  public response = (getters: Array<unknown>, payload?: P): IVxsResponse<D> | unknown => {
     if (!this.options.cache) {
       throw new Error('response is not available on this object')
     }
@@ -115,39 +115,39 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     return getter(payload)
   }
 
-  public dataNamespace(): string {
+  public dataNamespace = (): string => {
     return this.namespace + SEPARATOR + GET.DATA
   }
 
-  public fetch(): string {
+  public fetch = (): string => {
     return this.namespace + SEPARATOR + ACTION.FETCH
   }
 
-  public send(): string {
+  public send = (): string => {
     return this.namespace + SEPARATOR + ACTION.SEND
   }
 
-  public invalidate(): string {
+  public invalidate = (): string => {
     return this.namespace + SEPARATOR + ACTION.INVALIDATE
   }
 
-  public invalidateAll(): string {
+  public invalidateAll = (): string => {
     return this.namespace + SEPARATOR + ACTION.INVALIDATE_ALL
   }
 
-  public forceFetch(): string {
+  public forceFetch = (): string => {
     if (!this.options.cache) {
       throw new Error('forceFetch is not available on this object')
     }
     return this.namespace + SEPARATOR + ACTION.FORCE_FETCH
   }
 
-  public reset(): string {
+  public reset = (): string => {
     return this.namespace + SEPARATOR + ACTION.RESET
   }
 
   // tslint:disable-next-line: no-any
-  public setState(payload: any, mockState: any): void {
+  public setState = (payload: any, mockState: any): void => {
     if (mockState === undefined) {
       mockState = payload
       payload = undefined
@@ -175,18 +175,18 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     this.state.RESPONSE[payloadToKey(payload)] = mockState.response
   }
 
-  public setMethod(stub: VxsMethod<P, D>): void {
+  public setMethod = (stub: VxsMethod<P, D>): void => {
     this.actions.method = stub
   }
 
-  public setVuexXhrCreator(vuexXhrCreator: VuexXhrCreator): void {
+  public setVuexXhrCreator = (vuexXhrCreator: VuexXhrCreator): void => {
     this.vuexXhrCreator = vuexXhrCreator
   }
 
   /**
    * Invalidate the cache of the group this method belongs to
    */
-  public inValidateGroup(): void {
+  public inValidateGroup = (): void => {
     if (!this.vuexXhrCreator) {
       return
     }
@@ -202,7 +202,7 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     this.setMethod(() => promise)
   }
 
-  private mergeStore(store: IVxsExtendedStore<D, S, RS>): void {
+  private mergeStore = (store: IVxsExtendedStore<D, S, RS>): void => {
     if (store.mutations) {
       Object.assign(this.mutations, store.mutations)
     }
@@ -214,7 +214,7 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     }
   }
 
-  private findGetter(getters: Array<unknown>, index: string): (_?: P) => unknown {
+  private findGetter = (getters: Array<unknown>, index: string): (_?: P) => unknown => {
     if (typeof getters[this.namespace + SEPARATOR + index] !== 'undefined') {
       return getters[this.namespace + SEPARATOR + index]
     }
