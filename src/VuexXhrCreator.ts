@@ -8,7 +8,8 @@ export class VuexXhrCreator {
   public modules: {}
   public store?: Store<unknown>
 
-  constructor(namespace: string, xhrStores: Array<VuexXhr<unknown, unknown, unknown, unknown>>) {
+  // tslint:disable-next-line:no-any
+  constructor(namespace: string, xhrStores: Array<VuexXhr<object, object, any, any>>) {
     this.namespace = namespace
     this.modules = this.xhrStoresToModules(xhrStores)
   }
@@ -45,9 +46,10 @@ export class VuexXhrCreator {
     }
   }
 
-  public xhrStoresToModules = (
-    xhrStores: Array<VuexXhr<unknown, unknown, unknown, unknown>>,
-  ): { [_: string]: VuexXhr<unknown, unknown, unknown, unknown> } => {
+  // tslint:disable-next-line:no-any
+  public xhrStoresToModules = (xhrStores: Array<VuexXhr<object, object, any, any>>)
+    // tslint:disable-next-line:no-any
+    : { [_: string]: VuexXhr<object, object, any, any> } => {
     const modules = {}
     xhrStores.forEach((xhrStore, index) => {
       xhrStore.setVuexXhrCreator(this)
