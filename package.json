@@ -30,8 +30,7 @@
   },
   "homepage": "https://github.com/ultraware/vuex-xhr-state#readme",
   "dependencies": {
-    "js-md5": "^0.7.3",
-    "quasar-framework": "^0.17.18"
+    "js-md5": "^0.7.3"
   },
   "devDependencies": {
     "@laura-wert/git-clean-status": "^1.0.0",

@@ -3062,11 +3062,6 @@ punycode@^2.1.0:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-quasar-framework@^0.17.18:
-  version "0.17.18"
-  resolved "https://registry.yarnpkg.com/quasar-framework/-/quasar-framework-0.17.18.tgz#c700b80863df547171735b48d994aa30917895ed"
-  integrity sha512-4ejEGoPUbBY02kpmfojtABBO76H41ie+Pw2Tyurnn5ZG/ZS0SJiordU+hKn99RhcA1BSX02t40pIheH+Bc/0zg==
-
 querystring-es3@^0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/querystring-es3/-/querystring-es3-0.2.1.tgz#9ec61f79049875707d69414596fd907a4d711e73"
