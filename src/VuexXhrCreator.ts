@@ -7,6 +7,7 @@ export class VuexXhrCreator {
   public namespace: string
   public modules: {}
   public store?: Store<unknown>
+  private invalidateCreators: VuexXhrCreator[] = []
 
   // tslint:disable-next-line:no-any
   constructor(namespace: string, xhrStores: Array<VuexXhr<object, object, any, any>>) {
@@ -44,6 +45,17 @@ export class VuexXhrCreator {
         this.store.dispatch(this.modules[key].invalidateAll())
       }
     }
+
+    for (const creator of this.invalidateCreators) {
+      creator.invalidateAll()
+    }
+  }
+
+  public invalidates = (creators: VuexXhrCreator | VuexXhrCreator[]): void => {
+    if (!Array.isArray(creators)) {
+      creators = [creators]
+    }
+    this.invalidateCreators = creators
   }
 
   // tslint:disable-next-line:no-any
