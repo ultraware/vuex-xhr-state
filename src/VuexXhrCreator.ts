@@ -10,7 +10,7 @@ export class VuexXhrCreator {
   private invalidateCreators: VuexXhrCreator[] = []
 
   // tslint:disable-next-line:no-any
-  constructor(namespace: string, xhrStores: Array<VuexXhr<object, object, any, any>>) {
+  constructor(namespace: string, xhrStores: Array<VuexXhr<any, any, any, any>>) {
     this.namespace = namespace
     this.modules = this.xhrStoresToModules(xhrStores)
   }
