@@ -23,13 +23,14 @@ export default <D, P, S, RS>(
         if (!fetchPromise) {
           return getResolvingPromiseFromGetter(store, payload)
         }
+
         return fetchPromise
       }
       if (cache && store.getters[GET.FETCHED](payload) && store.getters[GET.FETCHED](payload)) {
         return getResolvingPromiseFromGetter(store, payload)
       }
       fetchPromise = runMethod(result.method, store, payload)
-      fetchPromise.finally(() => {
+      fetchPromise = fetchPromise.finally(() => {
         fetchPromise = null
       })
       return fetchPromise
