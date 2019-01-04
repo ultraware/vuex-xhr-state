@@ -30,8 +30,9 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     this.options = options
     this.state = makeState<D, P, S>(this.options)
     this.mutations = makeMutations<D, P, S>(this.options)
+
     this.actions = makeActions<D, P, S, RS>(
-      this.options.cache ? this.options.cache : true,
+      this.options.cache !== undefined ? this.options.cache : true,
       this.options.method,
       this.inValidateGroup,
     )
@@ -47,35 +48,35 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
   }
 
   public mapPending = (payload: P): IMapResult<P> => {
-    return {key: this.namespace + SEPARATOR + GET.PENDING, payload}
+    return { key: this.namespace + SEPARATOR + GET.PENDING, payload }
   }
 
   public mapHasError = (payload: P): IMapResult<P> => {
     if (!this.options.cache) {
       throw new Error('mapHasError is not available on this object')
     }
-    return {key: this.namespace + SEPARATOR + GET.HAS_ERROR, payload}
+    return { key: this.namespace + SEPARATOR + GET.HAS_ERROR, payload }
   }
 
   public mapFetched = (payload: P): IMapResult<P> => {
     if (!this.options.cache) {
       throw new Error('mapFetched is not available on this object')
     }
-    return {key: this.namespace + SEPARATOR + GET.FETCHED, payload}
+    return { key: this.namespace + SEPARATOR + GET.FETCHED, payload }
   }
 
   public mapData = (payload: P): IMapResult<P> => {
     if (!this.options.cache) {
       throw new Error('mapData is not available on this object')
     }
-    return {key: this.namespace + SEPARATOR + GET.DATA, payload}
+    return { key: this.namespace + SEPARATOR + GET.DATA, payload }
   }
 
   public mapResponse = (payload: P): IMapResult<P> => {
     if (!this.options.cache) {
       throw new Error('mapResponse is not available on this object')
     }
-    return {key: this.namespace + SEPARATOR + GET.RESPONSE, payload}
+    return { key: this.namespace + SEPARATOR + GET.RESPONSE, payload }
   }
 
   public pending = (getters: Array<unknown>, payload: P): unknown => {

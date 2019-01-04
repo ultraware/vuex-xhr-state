@@ -4,7 +4,7 @@ import { GET } from './keys'
 import { IVxsResponse, IVxsState } from './types'
 
 export default <D, P, RS>(cache: boolean): GetterTree<IVxsState<D>, RS> => {
-  const result = <GetterTree<IVxsState<D>, RS>> {
+  const result = <GetterTree<IVxsState<D>, RS>>{
     [GET.PENDING]: (state: IVxsState<D>): unknown => (payload: P): boolean => {
       return state.PENDING[payloadToKey(payload)]
     },
