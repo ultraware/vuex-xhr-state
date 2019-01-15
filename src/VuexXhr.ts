@@ -48,43 +48,45 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
   }
 
   public mapPending = (payload: P): IMapResult<P> => {
-    return { key: this.namespace + SEPARATOR + GET.PENDING, payload }
+    return {key: this.namespace + SEPARATOR + GET.PENDING, payload}
   }
 
   public mapHasError = (payload: P): IMapResult<P> => {
     if (!this.options.cache) {
       throw new Error('mapHasError is not available on this object')
     }
-    return { key: this.namespace + SEPARATOR + GET.HAS_ERROR, payload }
+    return {key: this.namespace + SEPARATOR + GET.HAS_ERROR, payload}
   }
 
   public mapFetched = (payload: P): IMapResult<P> => {
     if (!this.options.cache) {
       throw new Error('mapFetched is not available on this object')
     }
-    return { key: this.namespace + SEPARATOR + GET.FETCHED, payload }
+    return {key: this.namespace + SEPARATOR + GET.FETCHED, payload}
   }
 
   public mapData = (payload: P): IMapResult<P> => {
     if (!this.options.cache) {
       throw new Error('mapData is not available on this object')
     }
-    return { key: this.namespace + SEPARATOR + GET.DATA, payload }
+    return {key: this.namespace + SEPARATOR + GET.DATA, payload}
   }
 
   public mapResponse = (payload: P): IMapResult<P> => {
     if (!this.options.cache) {
       throw new Error('mapResponse is not available on this object')
     }
-    return { key: this.namespace + SEPARATOR + GET.RESPONSE, payload }
+    return {key: this.namespace + SEPARATOR + GET.RESPONSE, payload}
   }
 
-  public pending = (getters: Array<unknown>, payload: P): unknown => {
+  // tslint:disable-next-line:no-any
+  public pending = (getters: any[], payload: P): unknown => {
     const getter = this.findGetter(getters, GET.PENDING)
     return getter(payload)
   }
 
-  public hasError = (getters: Array<unknown>, payload?: P): unknown => {
+  // tslint:disable-next-line:no-any
+  public hasError = (getters: any[], payload?: P): unknown => {
     if (!this.options.cache) {
       throw new Error('hasError is not available on this object')
     }
@@ -92,7 +94,8 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     return getter(payload)
   }
 
-  public fetched = (getters: Array<unknown>, payload?: P): unknown => {
+  // tslint:disable-next-line:no-any
+  public fetched = (getters: any[], payload?: P): unknown => {
     if (!this.options.cache) {
       throw new Error('fetched is not available on this object')
     }
@@ -100,7 +103,8 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     return getter(payload)
   }
 
-  public data = (getters: Array<unknown>, payload?: P): D | unknown => {
+  // tslint:disable-next-line:no-any
+  public data = (getters: any[], payload?: P): D => {
     if (!this.options.cache) {
       throw new Error('data is not available on this object')
     }
@@ -108,7 +112,8 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     return getter(payload)
   }
 
-  public response = (getters: Array<unknown>, payload?: P): IVxsResponse<D> | unknown => {
+  // tslint:disable-next-line:no-any
+  public response = (getters: any[], payload?: P): IVxsResponse<D> | unknown => {
     if (!this.options.cache) {
       throw new Error('response is not available on this object')
     }
@@ -215,7 +220,8 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
     }
   }
 
-  private findGetter = (getters: Array<unknown>, index: string): (_?: P) => unknown => {
+  // tslint:disable-next-line:no-any
+  private findGetter = (getters: any[], index: string): (_?: P) => any => {
     if (typeof getters[this.namespace + SEPARATOR + index] !== 'undefined') {
       return getters[this.namespace + SEPARATOR + index]
     }
