@@ -1,6 +1,5 @@
 import { Plugin, Store } from 'vuex'
 import { GLOBAL_GETTERS, GLOBAL_NAMESPACE, globalStore } from './globalXhrState'
-import { IVxsModuleState } from './types'
 import VuexXhr from './VuexXhr'
 
 export class VuexXhrCreator {
@@ -29,7 +28,8 @@ export class VuexXhrCreator {
     }
   }
 
-  public reset = ($store: Store<IVxsModuleState>): void => {
+  // tslint:disable-next-line:no-any
+  public reset = ($store: Store<any>): void => {
     for (const prop in this.modules) {
       if (!this.modules.hasOwnProperty(prop)) continue
       $store.dispatch(this.modules[prop].reset())
