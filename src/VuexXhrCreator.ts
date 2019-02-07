@@ -7,6 +7,8 @@ export class VuexXhrCreator {
   public modules: {}
   public store?: Store<unknown>
   private invalidateCreators: VuexXhrCreator[] = []
+  // tslint:disable-next-line:no-any
+  private invalidateXhr: Array<VuexXhr<any, any, any, any>> = []
 
   // tslint:disable-next-line:no-any
   constructor(namespace: string, xhrStores: Array<VuexXhr<any, any, any, any>>) {
@@ -49,13 +51,41 @@ export class VuexXhrCreator {
     for (const creator of this.invalidateCreators) {
       creator.invalidateAll()
     }
+
+    for (const xhr of this.invalidateXhr) {
+      this.store.dispatch(xhr.invalidateAll(), { root: true })
+    }
   }
 
-  public invalidates = (creators: VuexXhrCreator | VuexXhrCreator[]): void => {
+  public invalidates = (vxs:
+                          VuexXhrCreator | VuexXhrCreator[] |
+                          // tslint:disable-next-line:no-any
+                          VuexXhr<any, any, any, any> | Array<VuexXhr<any, any, any, any>>,
+  ): void => {
+    if (vxs instanceof VuexXhrCreator || vxs[0] instanceof VuexXhrCreator) {
+      // @ts-ignore
+      return this.invalidatesCreator(vxs)
+    }
+
+    // @ts-ignore
+    this.invalidatesXhr(vxs)
+  }
+
+  public invalidatesCreator = (creators: VuexXhrCreator | VuexXhrCreator[]): void => {
     if (!Array.isArray(creators)) {
       creators = [creators]
     }
+
     this.invalidateCreators = creators
+  }
+
+  // tslint:disable-next-line:no-any
+  public invalidatesXhr = (xhr: VuexXhr<any, any, any, any> | Array<VuexXhr<any, any, any, any>>): void => {
+    if (!Array.isArray(xhr)) {
+      xhr = [xhr]
+    }
+
+    this.invalidateXhr = xhr
   }
 
   // tslint:disable-next-line:no-any
