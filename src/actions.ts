@@ -2,9 +2,9 @@ import { ActionContext } from 'vuex'
 import { GLOBAL_ACTIONS, GLOBAL_NAMESPACE } from './globalXhrState'
 import { payloadToKey } from './helpers'
 import { ACTION, GET, MUTATIONS } from './keys'
-import { IVxsResponse, VxsActionTree, VxsExtendedState, VxsMethod } from './types'
+import { IVxsPayload, IVxsPromise, IVxsResponse, VxsActionTree, VxsExtendedState, VxsMethod } from './types'
 
-export default <D, P, S, RS>(
+export default <D, P extends IVxsPayload, S, RS>(
   cache: boolean,
   method: VxsMethod<P, D>,
   inValidateGroup: () => void,
@@ -64,8 +64,8 @@ export default <D, P, S, RS>(
     vxsMethod: VxsMethod<P, D>,
     store: ActionContext<VxsExtendedState<D, S>, RS>,
     payload: P,
-  ): Promise<IVxsResponse<D>> {
-    let prom
+  ): IVxsPromise<D> {
+    let prom: IVxsPromise<D>
     const reply = vxsMethod(payload)
     const key = payloadToKey(payload)
     const uniqueId = Math.random()
@@ -75,8 +75,10 @@ export default <D, P, S, RS>(
       prom = <Promise<IVxsResponse<D>>>reply
       prom.then((response: IVxsResponse<D>): void => {
         mutateReceived(store, key, uniqueId, response)
-      }).catch((response): void => {
-        mutateFailed(store, key, uniqueId, response)
+      }).catch((error): void => {
+        const catched = handleError(payload, error)
+
+        mutateFailed(store, key, uniqueId, error, catched)
       })
     } else {
       const data = <D>reply
@@ -90,6 +92,18 @@ export default <D, P, S, RS>(
     store.commit(MUTATIONS.REQUEST, { key })
     store.dispatch(`${GLOBAL_NAMESPACE}/${GLOBAL_ACTIONS.REQUEST}`, uniqueId, { root: true })
     return prom
+  }
+
+  // tslint:disable-next-line:no-any
+  function handleError(payload: P, error: any): boolean {
+    if (
+      payload !== undefined &&
+      payload.errorHandler !== undefined
+    ) {
+      return payload.errorHandler(error)
+    }
+
+    return false
   }
 
   function mutateReceived(
@@ -106,11 +120,12 @@ export default <D, P, S, RS>(
     key: string,
     uniqueId: number,
     response: IVxsResponse<D>,
+    catched: boolean,
   ): void {
     store.commit(MUTATIONS.FAILED, { key, response })
     store.dispatch(
       `${GLOBAL_NAMESPACE}/${GLOBAL_ACTIONS.FAILED}`,
-      { key: uniqueId, response }, { root: true },
+      { key: uniqueId, response, catched }, { root: true },
     )
   }
 
