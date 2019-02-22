@@ -45,12 +45,15 @@ export const globalStore = {
     [GLOBAL_GETTERS.LAST_ERROR_RESPONSE]: (state: IGlobalState): object => state.last_error,
   },
   actions: {
-    [ACTIONS.REQUEST]: ({commit}: ActionContext<unknown, unknown>, key: string): void =>
+    [ACTIONS.REQUEST]: ({ commit }: ActionContext<unknown, unknown>, key: string): void =>
       commit(MUTATIONS.ADD_PENDING, key),
-    [ACTIONS.RECEIVED]: ({commit}: ActionContext<unknown, unknown>, key: string): void =>
+    [ACTIONS.RECEIVED]: ({ commit }: ActionContext<unknown, unknown>, key: string): void =>
       commit(MUTATIONS.REMOVE_PENDING, key),
-    [ACTIONS.FAILED]: ({commit}: ActionContext<unknown, unknown>, payload: IVxsMutationPayload): void => {
-      commit(MUTATIONS.SET_ERROR, payload)
+
+    [ACTIONS.FAILED]: ({ commit }: ActionContext<unknown, unknown>, payload: IVxsMutationPayload): void => {
+      if (!payload.catched) {
+        commit(MUTATIONS.SET_ERROR, payload)
+      }
       commit(MUTATIONS.REMOVE_PENDING, payload.key)
     },
   },

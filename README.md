@@ -76,6 +76,14 @@ export default new Vuex.Store({
      },
      created () {
        this.fetchLogs()
+       /**
+        * or with custom error handling
+        * if the closure returns true the error will not apear in the global VXS store
+        */
+       const errorHandler(error => {
+         return true
+       }) 
+       this.fetchLogs({ errorHandler })
      },
     }
  ```

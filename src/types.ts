@@ -56,4 +56,10 @@ export type VxsActionTree<S, RS, P, D> = IVxsActionTreeExtension<P, D> & ActionT
 export interface IVxsMutationPayload {
   key: string
   response: object
+  catched: boolean
+}
+
+export interface IVxsPayload {
+  // tslint:disable-next-line:no-any
+  errorHandler?: (_: any) => boolean
 }
