@@ -62,6 +62,4 @@ export interface IVxsMutationPayload {
 export interface IVxsPayload {
   // tslint:disable-next-line:no-any
   errorHandler?: (_: any) => boolean
-  // tslint:disable-next-line:no-any
-  [_: string]: any
 }
