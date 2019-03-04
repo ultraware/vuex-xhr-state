@@ -43,7 +43,11 @@ export class VuexXhrCreator {
       return
     }
     for (const key in this.modules) {
-      if (this.modules.hasOwnProperty(key) && this.modules[key].options.cache) {
+      if (
+        this.modules.hasOwnProperty(key) &&
+        this.modules[key].options.cache &&
+        !this.modules[key].options.alwaysRefetch
+      ) {
         this.store.dispatch(this.modules[key].invalidateAll())
       }
     }

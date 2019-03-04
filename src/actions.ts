@@ -5,11 +5,20 @@ import { ACTION, GET, MUTATIONS } from './keys'
 import { IVxsPayload, IVxsPromise, IVxsResponse, VxsActionTree, VxsExtendedState, VxsMethod } from './types'
 
 export default <D, P extends IVxsPayload, S, RS>(
-  cache: boolean,
+  alwaysRefetch: boolean,
   method: VxsMethod<P, D>,
   inValidateGroup: () => void,
 ): VxsActionTree<S, RS, P, D> => {
   let fetchPromise: Promise<IVxsResponse<D>> | null = null
+
+  function isPending(store: ActionContext<VxsExtendedState<D, S>, RS>, payload: P): boolean {
+    return store.getters[GET.PENDING](payload)
+  }
+
+  function isFetched(store: ActionContext<VxsExtendedState<D, S>, RS>, payload: P): boolean {
+    return store.getters[GET.FETCHED](payload)
+  }
+
   const result = <VxsActionTree<S, RS, P, D>>{
     [ACTION.SEND](store: ActionContext<VxsExtendedState<D, S>, RS>, payload: P): Promise<IVxsResponse<D>> {
       const methodPromise = runMethod(result.method, store, payload)
@@ -19,14 +28,14 @@ export default <D, P extends IVxsPayload, S, RS>(
     },
 
     [ACTION.FETCH](store: ActionContext<VxsExtendedState<D, S>, RS>, payload: P): Promise<IVxsResponse<D>> {
-      if (cache && store.getters[GET.PENDING](payload) && store.getters[GET.PENDING](payload)) {
+      if (!alwaysRefetch && isPending(store, payload)) {
         if (!fetchPromise) {
           return getResolvingPromiseFromGetter(store, payload)
         }
 
         return fetchPromise
       }
-      if (cache && store.getters[GET.FETCHED](payload) && store.getters[GET.FETCHED](payload)) {
+      if (!alwaysRefetch && isFetched(store, payload)) {
         return getResolvingPromiseFromGetter(store, payload)
       }
       fetchPromise = runMethod(result.method, store, payload)
@@ -40,7 +49,7 @@ export default <D, P extends IVxsPayload, S, RS>(
       store.commit(MUTATIONS.RESET)
     },
   }
-  if (cache) {
+  if (!alwaysRefetch) {
     result[ACTION.FORCE_FETCH] = (
       store: ActionContext<VxsExtendedState<D, S>, RS>,
       payload: P,

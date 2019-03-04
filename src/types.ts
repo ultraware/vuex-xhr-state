@@ -14,6 +14,7 @@ export interface IVxsOptions<D, P = unknown, S = unknown, RS = unknown> {
   default?: D
   store?: IVxsExtendedStore<D, S, RS>
   cache?: boolean
+  alwaysRefetch?: boolean
 }
 
 export type VxsMethod<P, D> = (_: P) => IVxsPromise<D> | D
