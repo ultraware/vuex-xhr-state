@@ -7,6 +7,7 @@ export class VuexXhrPut<P, S = object, RS = object, D = undefined> extends VuexX
   constructor(options: IVxsOptions<D, P, S >) {
     options = options || {}
     options.cache = false
+    options.alwaysRefetch = true
     super(options)
   }
 }

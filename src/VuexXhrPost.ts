@@ -7,6 +7,7 @@ export class VuexXhrPost<P, S = object, RS = object, D = undefined> extends Vuex
   constructor(options: IVxsOptions<D, P, S>) {
     options = options || {}
     options.cache = false
+    options.alwaysRefetch = true
     super(options)
   }
 }
