@@ -79,9 +79,8 @@ export default <D, P extends IVxsPayload, S, RS>(
     const key = payloadToKey(payload)
     const uniqueId = Math.random()
 
-    // @ts-ignore
-    if (reply.then) {
-      prom = <Promise<IVxsResponse<D>>>reply
+    if ((<IVxsPromise<D>>reply).then !== undefined) {
+      prom = <IVxsPromise<D>>reply
       prom.then((response: IVxsResponse<D>): void => {
         mutateReceived(store, key, uniqueId, response)
       }).catch((error): void => {
