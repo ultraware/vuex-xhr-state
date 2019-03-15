@@ -21,9 +21,11 @@ export default <D, P extends IVxsPayload, S, RS>(
 
   const result = <VxsActionTree<S, RS, P, D>>{
     [ACTION.SEND](store: ActionContext<VxsExtendedState<D, S>, RS>, payload: P): Promise<IVxsResponse<D>> {
-      const methodPromise = runMethod(result.method, store, payload)
-      methodPromise
-        .then(() => inValidateGroup())
+      let methodPromise = runMethod(result.method, store, payload)
+      methodPromise = methodPromise.then((promResult) => {
+        inValidateGroup()
+        return promResult
+      })
       return methodPromise
     },
 
