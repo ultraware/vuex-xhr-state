@@ -38,7 +38,7 @@ export class VuexXhrCreator {
     }
   }
 
-  public invalidateAll = (): void => {
+  public invalidateAll = (fromNamespace: string[] = []): void => {
     if (!this.store) {
       return
     }
@@ -52,8 +52,12 @@ export class VuexXhrCreator {
       }
     }
 
+    fromNamespace.push(this.namespace)
     for (const creator of this.invalidateCreators) {
-      creator.invalidateAll()
+      if (fromNamespace.includes(creator.namespace)) {
+        continue
+      }
+      creator.invalidateAll(fromNamespace)
     }
 
     for (const xhr of this.invalidateXhr) {
