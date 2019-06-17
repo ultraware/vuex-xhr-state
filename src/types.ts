@@ -1,7 +1,5 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 
-// export interface VxsErrorResponse {}
-
 export interface IVxsResponse<D> {
   data: D
 }

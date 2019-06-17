@@ -22,15 +22,15 @@ export default class VuexXhr<S, RS, P, D> implements Module<VxsExtendedState<D, 
   public mutations: MutationTree<VxsExtendedState<D, S>>
   public actions: VxsActionTree<S, RS, P, D>
   public getters: GetterTree<VxsExtendedState<D, S>, RS>
-  public options: IVxsOptions<D, P, S>
+  public options: IVxsOptions<D, P, S, RS>
   private vuexXhrCreator?: VuexXhrCreator
 
-  constructor(options: IVxsOptions<D, P, S>) {
+  constructor(options: IVxsOptions<D, P, S, RS>) {
     this.namespaced = true
     this.options = options
     this.options.alwaysRefetch = this.options.alwaysRefetch === undefined ? true : this.options.alwaysRefetch
-    this.state = makeState<D, P, S>(this.options)
-    this.mutations = makeMutations<D, P, S>(this.options)
+    this.state = makeState<D, P, S, RS>(this.options)
+    this.mutations = makeMutations<D, P, S, RS>(this.options)
 
     this.actions = makeActions<D, P, S, RS>(
       this.options.alwaysRefetch,

@@ -3,7 +3,7 @@ import { MUTATIONS } from './keys'
 import initialState from './state'
 import { IVxsMutationPayload, IVxsOptions, IVxsState, VxsExtendedState } from './types'
 
-export default <D, P, S>(options: IVxsOptions<D, P, S>): MutationTree<VxsExtendedState<D, S>> => {
+export default <D, P, S, RS>(options: IVxsOptions<D, P, S, RS>): MutationTree<VxsExtendedState<D, S>> => {
   return <MutationTree<VxsExtendedState<D, S>>> {
     [MUTATIONS.REQUEST](state: IVxsState<S>, payload: IVxsMutationPayload): void {
       state.PENDING = Object.assign({}, state.PENDING, {[payload.key]: true})
